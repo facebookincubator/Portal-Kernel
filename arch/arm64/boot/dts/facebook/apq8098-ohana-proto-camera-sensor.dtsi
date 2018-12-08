@@ -1,0 +1,79 @@
+/* Copyright (c) 2017, Facebook Inc. All rights reserved.
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License version 2 and
+ * only version 2 as published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ */
+
+&pd_camera {
+	/delete-node/ gpio-irq;
+};
+
+&spi_1 {
+	/delete-node/ sensor_spi@0;
+};
+
+&cam_sensor_rear_active {
+	/* RESET */
+	mux {
+		pins = "gpio30";
+		function = "gpio";
+	};
+
+	config {
+		pins = "gpio30";
+		bias-disable; /* No PULL */
+		drive-strength = <2>; /* 2 MA */
+	};
+};
+
+&cam_sensor_rear_suspend {
+	/* RESET */
+	mux {
+		pins = "gpio30";
+		function = "gpio";
+	};
+
+	config {
+		pins = "gpio30";
+		bias-disable; /* No PULL */
+		drive-strength = <2>; /* 2 MA */
+	};
+};
+
+&cam_sensor_mclk0_active {
+	config {
+		drive-strength = <8>; /* 8 MA */
+	};
+};
+
+&cci {
+	eeprom0: qcom,eeprom@0 {
+		qcom,gpio-req-tbl-num = <0 1>;
+		qcom,gpio-req-tbl-flags = <1 0>;
+		qcom,gpio-req-tbl-label = "CAMIF_MCLK0",
+					"CAM_RESET0";
+		gpios = <&tlmm 13 0>,
+			<&tlmm 30 0>;
+		/delete-property/ qcom,gpio-vana;
+	};
+
+	qcom,camera@0 {
+		qcom,gpio-req-tbl-num = <0 1>;
+		qcom,gpio-req-tbl-flags = <1 0>;
+		qcom,gpio-req-tbl-label = "CAMIF_MCLK0",
+					"CAM_RESET0";
+
+		gpios = <&tlmm 13 0>,
+			<&tlmm 30 0>;
+		/delete-property/ qcom,gpio-custom1;
+		/delete-property/ qcom,gpio-custom2;
+		/delete-property/ qcom,gpio-vana;
+	};
+};
+

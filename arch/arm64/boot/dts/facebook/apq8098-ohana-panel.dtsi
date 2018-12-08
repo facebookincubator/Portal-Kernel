@@ -1,0 +1,311 @@
+/* Copyright (c) 2016, The Linux Foundation. All rights reserved.
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License version 2 and
+ * only version 2 as published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ */
+#include <dt-bindings/gpio/gpio.h>
+#include "../qcom/msm8998-mdss-panels.dtsi"
+#include "apq8098-ohana-panel-boe-nf0.dtsi"
+
+&soc {
+	dsi_panel_pwr_supply_no_labibb_AUO: dsi_panel_pwr_supply_no_labibb_AUO {
+		#address-cells = <1>;
+		#size-cells = <0>;
+
+		qcom,panel-supply-entry@0 {
+			reg = <0>;
+			qcom,supply-name = "wqhd-vddio";
+			qcom,supply-min-voltage = <1800000>;
+			qcom,supply-max-voltage = <1800000>;
+			qcom,supply-enable-load = <32000>;
+			qcom,supply-disable-load = <80>;
+			qcom,supply-post-off-sleep = <500>;
+			qcom,supply-pre-off-sleep = <10>; /* AUO T19 spec */
+		};
+
+		qcom,panel-supply-entry@1 {
+			reg = <1>;
+			qcom,supply-name = "dispvcc_3v3";
+			qcom,supply-min-voltage = <3300000>;
+			qcom,supply-max-voltage = <3300000>;
+			qcom,supply-enable-load = <32000>;
+			qcom,supply-disable-load = <80>;
+			qcom,supply-pre-off-sleep = <125>; /* AUO T17 spec */
+			qcom,supply-post-on-sleep = <2>;   // T2
+		};
+	};
+
+	dsi_panel_pwr_supply_no_labibb_BOE: dsi_panel_pwr_supply_no_labibb_BOE {
+		#address-cells = <1>;
+		#size-cells = <0>;
+
+		qcom,panel-supply-entry@0 {
+			reg = <0>;
+			qcom,supply-name = "wqhd-vddio";
+			qcom,supply-min-voltage = <1800000>;
+			qcom,supply-max-voltage = <1800000>;
+			qcom,supply-enable-load = <32000>;
+			qcom,supply-disable-load = <80>;
+		};
+
+		qcom,panel-supply-entry@1 {
+			reg = <1>;
+			qcom,supply-name = "dispvcc_3v3";
+			qcom,supply-min-voltage = <3300000>;
+			qcom,supply-max-voltage = <3300000>;
+			qcom,supply-enable-load = <32000>;
+			qcom,supply-disable-load = <80>;
+			qcom,supply-post-on-sleep = <20>; // T3
+		};
+	};
+};
+
+&pmi8998_wled {
+	status = "okay";
+	qcom,fs-curr-ua = <21000>;
+};
+
+&mdss_mdp {
+	/* AUO */
+	dsi_b101ean024_video: qcom,mdss_dsi_b101ean024_video {
+		qcom,mdss-dsi-panel-name =
+				"AUO B101EAN024 WXGA video mode dsi panel";
+		qcom,mdss-dsi-panel-type = "dsi_video_mode";
+		qcom,mdss-dsi-panel-framerate = <60>;
+		qcom,mdss-dsi-virtual-channel-id = <0>;
+		qcom,mdss-dsi-stream = <0>;
+		qcom,mdss-dsi-panel-width = <800>;
+		qcom,mdss-dsi-panel-height = <1280>;
+		qcom,mdss-dsi-h-front-porch = <64>;
+		qcom,mdss-dsi-h-back-porch = <181>;
+		qcom,mdss-dsi-h-pulse-width = <16>;
+		qcom,mdss-dsi-h-sync-skew = <0>;
+		qcom,mdss-dsi-v-back-porch = <12>;
+		qcom,mdss-dsi-v-front-porch = <17>;
+		qcom,mdss-dsi-v-pulse-width = <4>;
+		qcom,mdss-dsi-bpp = <24>;
+		qcom,mdss-dsi-mdp-trigger = "none";
+		/*qcom,mdss-dsi-lp11-init;*/ /* AUO T9 spec */
+		qcom,mdss-dsi-reset-sequence = <1 6>, <0 1>, <1 10>; //T6 T8 T9
+		qcom,mdss-dsi-always-on;
+		qcom,mdss-dsi-bllp-eof-power-mode;
+		qcom,mdss-dsi-bllp-power-mode;
+		qcom,mdss-dsi-lane-0-state;
+		qcom,mdss-dsi-lane-1-state;
+		qcom,mdss-dsi-lane-2-state;
+		qcom,mdss-dsi-lane-3-state;
+		qcom,mdss-dsi-panel-timings =
+			[00 13 04 04 1F 1E 05 05 03 03 04 00];
+		qcom,mdss-dsi-t-clk-post = <0x0a>;
+		qcom,mdss-dsi-t-clk-pre = <0x20>;
+		qcom,mdss-pan-physical-width-dimension = <142>;
+		qcom,mdss-pan-physical-height-dimension = <228>;
+		qcom,mdss-dsi-bl-pmic-control-type = "bl_ctrl_wled";
+		qcom,mdss-dsi-bl-min-level = <1>;
+		qcom,mdss-dsi-bl-max-level = <4095>;
+		qcom,mdss-dsi-mode-sel-gpio-state = "single_port";
+		qcom,panel-supply-entries =
+				<&dsi_panel_pwr_supply_no_labibb_AUO>;
+		qcom,mdss-dsi-off-delay-send-rst-ms = <50>; /* AUO T16 spec */
+		qcom,mdss-backlight-post-off-sleep = <200>; // T13
+		qcom,mdss-dsi-on-command = [
+			05 01 00 00 B9 00 01 11 /* exit_sleep_mode */ /* T10 */
+			05 01 00 00 41 00 01 29 /* set_display_on */ /* T11 */
+		];
+		qcom,mdss-dsi-off-command = [
+			05 01 00 00 24 00 01 28 // T14
+			05 01 00 00 B9 00 01 10 // T15
+		];
+		qcom,mdss-dsi-on-command-state = "dsi_lp_mode";
+		qcom,mdss-dsi-off-command-state = "dsi_lp_mode";
+	};
+
+	/* BOE */
+	dsi_tv101wxm_nl3_video: qcom,mdss_dsi_tv101wxm_nl3_video {
+		qcom,mdss-dsi-panel-name =
+				"BOE TV101WXM-NL3 WXGA video mode dsi panel";
+		qcom,mdss-dsi-panel-type = "dsi_video_mode";
+		qcom,mdss-dsi-panel-framerate = <60>;
+		qcom,mdss-dsi-virtual-channel-id = <0>;
+		qcom,mdss-dsi-stream = <0>;
+		qcom,mdss-dsi-panel-width = <800>;
+		qcom,mdss-dsi-panel-height = <1280>;
+		qcom,mdss-dsi-h-front-porch = <64>;
+		qcom,mdss-dsi-h-back-porch = <181>;
+		qcom,mdss-dsi-h-pulse-width = <16>;
+		qcom,mdss-dsi-h-sync-skew = <0>;
+		qcom,mdss-dsi-v-back-porch = <12>;
+		qcom,mdss-dsi-v-front-porch = <17>;
+		qcom,mdss-dsi-v-pulse-width = <4>;
+		qcom,mdss-dsi-bpp = <24>;
+		qcom,mdss-dsi-mdp-trigger = "none";
+		qcom,mdss-dsi-lp11-init;
+		qcom,mdss-dsi-reset-sequence = <1 1>, <0 1>, <1 20>;
+		qcom,mdss-dsi-always-on;
+		qcom,mdss-dsi-bllp-eof-power-mode;
+		qcom,mdss-dsi-bllp-power-mode;
+		qcom,mdss-dsi-lane-0-state;
+		qcom,mdss-dsi-lane-1-state;
+		qcom,mdss-dsi-lane-2-state;
+		qcom,mdss-dsi-lane-3-state;
+		qcom,mdss-dsi-panel-timings =
+			[00 13 04 04 1F 1E 05 05 03 03 04 00];
+		qcom,mdss-dsi-t-clk-post = <0x0a>;
+		qcom,mdss-dsi-t-clk-pre = <0x20>;
+		qcom,mdss-pan-physical-width-dimension = <142>;
+		qcom,mdss-pan-physical-height-dimension = <228>;
+		qcom,mdss-dsi-bl-pmic-control-type = "bl_ctrl_wled";
+		qcom,mdss-dsi-bl-min-level = <1>;
+		qcom,mdss-dsi-bl-max-level = <4095>;
+		qcom,mdss-dsi-mode-sel-gpio-state = "single_port";
+		qcom,panel-supply-entries =
+				<&dsi_panel_pwr_supply_no_labibb_BOE>;
+		qcom,mdss-dsi-off-delay-send-rst-ms = <100>; /* BOE T10 spec */
+
+		qcom,mdss-dsi-on-command = [
+			39 01 00 00 00 00 05 FF AA 55 25 01
+			15 01 00 00 01 00 02 FC 08
+			15 01 00 00 00 00 02 FC 00
+			39 01 00 00 14 00 05 FF AA 55 25 00
+			39 01 00 00 00 00 06 F0 55 AA 52 08 00
+			39 01 00 00 00 00 03 B1 68 01
+			39 01 00 00 00 00 05 B8 01 02 02 02
+			15 01 00 00 01 00 02 B6 11
+			39 01 00 00 00 00 03 BB 63 63
+			39 01 00 00 00 00 03 BC 00 00
+			39 01 00 00 00 00 06 BD 02 BB 11 10 00
+			15 01 00 00 01 00 02 C8 80
+			39 01 00 00 00 00 06 F0 55 AA 52 08 01
+			39 01 00 00 00 00 03 B3 28 28
+			39 01 00 00 00 00 03 B4 14 14
+			39 01 00 00 00 00 03 B9 44 44
+			39 01 00 00 00 00 03 BA 24 24
+			39 01 00 00 00 00 03 BC 78 00
+			39 01 00 00 00 00 03 BD 78 00
+			39 01 00 00 00 00 06 F0 55 AA 52 08 02
+			15 01 00 00 00 00 02 EE 01
+			39 01 00 00 00 00 11 B0 00 00 00 1A 00 40 00 5C 00 75 00 9D 00 BD 00 F1
+			39 01 00 00 00 00 11 B1 01 1A 01 59 01 8A 01 D6 02 13 02 15 02 4B 02 84
+			39 01 00 00 00 00 11 B2 02 A8 02 DC 02 F6 03 26 03 43 03 6C 03 86 03 A1
+			39 01 00 00 00 00 05 B3 03 BA 03 FF
+			39 01 00 00 00 00 06 F0 55 AA 52 08 03
+			39 01 00 00 00 00 03 B0 00 00
+			39 01 00 00 00 00 03 B1 00 00
+			39 01 00 00 00 00 06 B2 05 01 55 00 1A
+			39 01 00 00 00 00 06 BA 53 01 55 00 3A
+			15 01 00 00 00 00 02 C4 60
+			15 01 00 00 00 00 02 C5 40
+			39 01 00 00 00 00 06 F0 55 AA 52 08 04
+			39 01 00 00 00 00 05 B1 03 02 05 07
+			39 01 00 00 00 00 06 F0 55 AA 52 08 05
+			39 01 00 00 00 00 06 BD 01 01 00 00 03
+			15 01 00 00 00 00 02 C0 09
+			39 01 00 00 00 00 03 C8 07 38
+			39 01 00 00 00 00 06 D1 00 05 01 00 00
+			15 01 00 00 00 00 02 E5 03
+			15 01 00 00 00 00 02 E6 03
+			15 01 00 00 00 00 02 E9 03
+			15 01 00 00 00 00 02 EA 03
+			39 01 00 00 00 00 06 F0 55 AA 52 08 06
+			39 01 00 00 00 00 03 B0 2D 2D
+			39 01 00 00 00 00 03 B1 01 01
+			39 01 00 00 00 00 03 B2 34 34
+			39 01 00 00 00 00 03 B3 2E 2E
+			39 01 00 00 00 00 03 B4 2E 2D
+			39 01 00 00 00 00 03 B5 2D 13
+			39 01 00 00 00 00 03 B6 13 11
+			39 01 00 00 00 00 03 B7 11 36
+			39 01 00 00 00 00 03 B8 36 15
+			39 01 00 00 00 00 03 B9 15 2E
+			39 01 00 00 00 00 03 BA 2E 14
+			39 01 00 00 00 00 03 BB 14 35
+			39 01 00 00 00 00 03 BC 35 10
+			39 01 00 00 00 00 03 BD 10 12
+			39 01 00 00 00 00 03 BE 12 2D
+			39 01 00 00 00 00 03 BF 2D 2E
+			39 01 00 00 00 00 03 C0 2E 2E
+			39 01 00 00 00 00 03 C1 34 34
+			39 01 00 00 00 00 03 C2 00 00
+			39 01 00 00 00 00 03 C3 2D 2D
+			39 01 00 00 00 00 03 C4 2E 2E
+			39 01 00 00 00 00 03 C5 00 00
+			39 01 00 00 00 00 03 C6 34 34
+			39 01 00 00 00 00 03 C7 2D 2D
+			39 01 00 00 00 00 03 C8 2E 2D
+			39 01 00 00 00 00 03 C9 2D 14
+			39 01 00 00 00 00 03 CA 14 35
+			39 01 00 00 00 00 03 CB 35 10
+			39 01 00 00 00 00 03 CC 10 12
+			39 01 00 00 00 00 03 CD 12 2E
+			39 01 00 00 00 00 03 CE 2E 13
+			39 01 00 00 00 00 03 CF 13 11
+			39 01 00 00 00 00 03 D0 11 36
+			39 01 00 00 00 00 03 D1 36 15
+			39 01 00 00 00 00 03 D2 15 2D
+			39 01 00 00 00 00 03 D3 2D 2E
+			39 01 00 00 00 00 03 D4 2D 2D
+			39 01 00 00 00 00 03 D5 34 34
+			39 01 00 00 00 00 03 D6 01 01
+			39 01 00 00 00 00 03 D7 2E 2E
+			39 01 00 00 00 00 06 D8 00 00 00 00 00
+			39 01 00 00 00 00 06 D9 00 00 00 00 00
+			39 01 00 00 00 00 03 E5 34 34
+			39 01 00 00 00 00 03 E6 34 34
+			39 01 00 00 00 00 03 E8 34 34
+			39 01 00 00 00 00 03 E9 34 34
+			39 01 00 00 00 00 06 F0 55 AA 52 00 00
+			15 01 00 00 01 00 02 35 00
+			05 01 00 00 78 00 01 11 /* exit_sleep_mode */
+			05 01 00 00 14 00 01 29 /* set_display_on */
+		];
+		qcom,mdss-dsi-off-command = [
+			05 01 00 00 14 00 01 28
+			05 01 00 00 50 00 01 10
+		];
+		qcom,mdss-dsi-on-command-state = "dsi_lp_mode";
+		qcom,mdss-dsi-off-command-state = "dsi_lp_mode";
+	};
+};
+
+&mdss_dsi {
+	hw-config = "single_dsi";
+};
+
+&mdss_dsi0 {
+	qcom,dsi-pref-prim-pan = <&dsi_b101ean024_video>;
+	qcom,platform-reset-gpio = <&tlmm 94 0>; /* LCD_RST_N */
+	pinctrl-0 = <&mdss_dsi_active>;
+	pinctrl-1 = <&mdss_dsi_suspend>;
+	dispvcc_3v3-supply = <&pm8998_l16>;
+};
+
+&mdss_dsi1 {
+	status = "disabled";
+};
+
+&mdss_dsi_active {
+	mux {
+		pins = "gpio94";
+	};
+
+	config {
+		pins = "gpio94";
+	};
+};
+
+&mdss_dsi_suspend {
+	mux {
+		pins = "gpio94";
+	};
+
+	config {
+		pins = "gpio94";
+	};
+};
+

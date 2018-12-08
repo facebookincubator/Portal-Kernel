@@ -1,0 +1,13 @@
+* Qualcomm Technologies, Inc. AR8151 driver module
+
+This module enables the AR8151 pcie ep platform driver.
+
+Required properties:
+- compatible:		Must be "qcom,ar8151"
+- qcom,pcie-parent	pcie-parent
+
+Example:
+	qcom,ar8151 {
+		compatible = "qcom,ar8151";
+		qcom,pcie-parent = <&pcie0>;
+	}

@@ -1,0 +1,52 @@
+/*
+ * Copyright (c) 2016 Silicon Works - http://www.siliconworks.co.kr
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License version 2 as
+ * published by the Free Software Foundation.
+ */
+#include <dt-bindings/gpio/gpio.h>
+
+&i2c_5 {
+	sw42101@34 {				// define new client device(sw42101), slave addr is 0x34
+		status = "okay";
+		compatible = "siw,sw42101";	// compatible name (see touch_sw42101.c)
+		reg = <0x34>;				// slave addr. : 0x34
+		interrupt-parent = <&tlmm>;	// interrupt source : TLMM
+		interrupts = <125 0x02>;	// index 125 TS0_INT (Touch Screen interrupt)
+		irqflags = <0x2002>;		// IRQF_ONESHOT(0x2000) | IRQF_TRIGGER_FALLING(0x2)
+
+		chip_flags = <0x0400>;		// TOUCH_USE_PWRCTRL
+
+		vdd-supply = <&pm8998_l28>;
+	//	vdd-gpio = <&tlmm 95 0>;			/* EDP_TP_EN */
+	//	reset-gpio = <&tlmm 89 GPIO_ACTIVE_LOW>;	/* TP_RST_N */
+		irq-gpio = <&tlmm 125 GPIO_ACTIVE_LOW>;		/* TP_INT_N */
+
+		// Caps
+		max_x = <1920>;
+		max_y = <1080>;
+		max_pressure = <0xff>;
+		max_width = <15>;
+		max_orientation = <1>;
+		max_id = <10>;
+
+		// role
+		hw_reset_delay = <500>;
+		sw_reset_delay = <90>;
+		use_lpwg = <0>;
+		use_lpwg_test = <0>;
+
+		// firmware
+		use_firmware = <1>;		// enable firmware control
+		use_fw_upgrade = <1>;		// auto-update during driver initialization
+		fw_image = "/system/etc/firmware/fbp42101_0_01.img";
+	//	panel_spec = "/system/etc/ph1_limit.txt";
+	//	panel_spec_mfts = "/system/etc/ph1_limit_mfts.txt";
+
+		// PRD
+	//	prd_in_file = "/sdcard/siw/sw42101_test_spec_V0.1.txt";
+	//	prd_in_file_m = "/sdcard/siw/sw42101_test_spec_mfts_V0.1.txt";
+	//	prd_out_file = "/sdcard/siw/touch_self_test.txt";
+	};
+};

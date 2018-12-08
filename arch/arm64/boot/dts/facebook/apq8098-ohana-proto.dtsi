@@ -1,0 +1,37 @@
+/* Copyright (c) 2017, Facebook Inc. All rights reserved.
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License version 2 and
+ * only version 2 as published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ */
+
+#include "apq8098-aloha-common.dtsi"
+#include "apq8098-ohana-blsp.dtsi"
+#include "apq8098-ohana-panel.dtsi"
+#include "apq8098-aloha-evt1-headless.dtsi"
+#include "apq8098-aloha-evt1-camera-sensor.dtsi"
+#include "apq8098-ohana-proto-camera-sensor.dtsi"
+#include "apq8098-ohana-proto-sensors.dtsi"
+#include "apq8098-ohana-touch-focaltech.dtsi"
+#include "apq8098-aloha-audio-evt1.dtsi"
+#include "apq8098-aloha-audio-tas5760.dtsi"
+#include "apq8098-aloha-audio-d4100.dtsi"
+#include "apq8098-aloha-evt2-audio-d4100.dtsi"
+#include "apq8098-aloha-audio.dtsi"
+#include "apq8098-ohana-audio.dtsi"
+#include "apq8098-ohana-proto-leds.dtsi"
+#include "apq8098-aloha-temp.dtsi"
+#include "apq8098-aloha-evt1-usb.dtsi"
+#include "apq8098-aloha-evt2-usb.dtsi"
+#include "apq8098-ohana-common.dtsi"
+
+&soc {
+	gpio_keys {
+		/delete-node/ vol_mute;
+	};
+};

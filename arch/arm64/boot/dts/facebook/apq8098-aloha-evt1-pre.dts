@@ -1,0 +1,31 @@
+/* Copyright (c) 2017, Facebook Inc. All rights reserved.
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License version 2 and
+ * only version 2 as published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ */
+
+#include "apq8098-aloha-evt1.dtsi"
+
+/ {
+	model = "Facebook, Inc. - Aloha Pre-EVT1";
+	qcom,board-id = <0x010105 0>;
+};
+
+&cs47l35 {
+	reset-gpios = <&tlmm 71 0>;
+};
+
+&i2c_8 {
+	/delete-node/tmp103c@0x71;
+	/delete-node/tmp103c@0x72;
+};
+
+&fb_privacy {
+	fb,legacy-hardware;
+};

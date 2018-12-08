@@ -1,0 +1,30 @@
+Binding for camera status leds
+-------------------------------------------------------------------------
+Misc device to control camera status leds from userspace through leds class interface.
+
+Required properties:
+- compatible : led_control
+
+Each child has own label and id
+- fb,label: Name of the led device.
+- fb,led-id: ID of the led device.
+
+Example:
+led_control: led_control {
+	compatible = "fb,led_control";
+
+	cam_red: led0 {
+		fb,label = "cam_red";
+		fb,led-id = FB_LED_CTRL_RED;
+	};
+
+	cam_green: led1 {
+		fb,label = "cam_green";
+		fb,led-id = FB_LED_CTRL_GREEN;
+	};
+
+	cam_blue: led2 {
+		fb,label = "cam_blue";
+		fb,led-id = FB_LED_CTRL_BLUE;
+	};
+};

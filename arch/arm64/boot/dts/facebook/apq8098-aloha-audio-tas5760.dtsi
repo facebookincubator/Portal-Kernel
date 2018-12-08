@@ -1,0 +1,110 @@
+/* Copyright (c) 2017, Facebook Inc. All rights reserved.
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License version 2 and
+ * only version 2 as published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ */
+
+#include <dt-bindings/gpio/gpio.h>
+
+&soc {
+	sound-9335 {
+		/delete-property/ amp_mute-gpios;
+		/delete-property/ amp_sdz-gpios;
+		/delete-property/ pwr-supply;
+		/delete-property/ interrupt-parent;
+		/delete-property/ interrupt-names;
+		/delete-property/ interrupts;
+
+		asoc-codec = <&stub_codec>, <&iaxxxspi0>, <&tas5760>,
+						<&ext_disp_audio_codec>;
+		asoc-codec-names = "msm-stub-codec.1", "iaxxx-codec", "tas5760",
+						"msm-ext-disp-audio-codec-rx";
+	};
+
+	qcom,msm_ext_disp {
+		qcom,msm-ext-disp-audio-codec-rx {
+			codec_name = "msm-ext-disp-audio-codec-rx";
+		};
+	};
+};
+
+&tlmm {
+	faultz_irq_gpio {
+		faultz_irq_active: faultz_irq_active {
+			mux {
+				pins = "gpio42";
+				function = "gpio";
+			};
+			config {
+				pins = "gpio42";
+				bias-pull-up;
+				input;
+			};
+		};
+
+		faultz_irq_suspend: faultz_irq_suspend {
+			mux {
+				pins = "gpio42";
+				function = "gpio";
+			};
+			config {
+				pins = "gpio42";
+				bias-pull-up;
+				input;
+			};
+		};
+	};
+};
+
+&i2c_6 {
+	tas5760: tas5760@6c {
+		compatible = "ti,tas5760";
+		reg = <0x6c>;
+		#sound-dai-cells = <0>;
+		amp_sdz-gpios = <&tlmm 49 GPIO_ACTIVE_HIGH>;
+		pwr-supply = <&amp_power_reg>;
+
+		interrupt-parent = <&tlmm>;
+		interrupt-names = "faultz";
+		interrupts = <42 IRQ_TYPE_EDGE_FALLING>;
+
+		pinctrl-names = "default", "sleep";
+		pinctrl-0 = <&faultz_irq_active>;
+		pinctrl-1 = <&faultz_irq_suspend>;
+
+		clock-names = "mclk";
+		clocks = <&clock_audio clk_audio_spk_i2s_clk>;
+
+		dynamic-clk;
+		dynamic-shutdown;
+		off-latency-us = <50000>; /* 50 ms delay suggested by EA team */
+
+		hw-params {
+			digital-boost = <0>;
+			analog-gain = <192>;
+			volume-fading;
+			vol-left = <205>;
+			vol-right = <205>;
+			oce-thresh = <2>;
+		};
+	};
+};
+
+&dai_mi2s3 {
+	qcom,msm-mi2s-rx-lines = <1>;
+	qcom,msm-mi2s-tx-lines = <2>;
+
+	pinctrl-names = "default", "sleep";
+	pinctrl-0 = <	&quat_mi2s_active
+			&quat_mi2s_sd0_active
+			&quat_mi2s_sd1_active>;
+	pinctrl-1 = <	&quat_mi2s_sleep
+			&quat_mi2s_sd0_sleep
+			&quat_mi2s_sd1_sleep>;
+};

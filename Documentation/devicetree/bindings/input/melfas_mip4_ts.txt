@@ -1,0 +1,18 @@
+* Melfas touch controller device tree bindings
+
+melfas,mip4_ts is required.
+
+Example:
+	melfas_mip4_ts@48 {
+		compatible = "melfas,mip4_ts";
+		reg = <0x48>;
+		interrupt-parent = <&msmgpio>;
+		interrupts = <5 0x0>;
+		vd33-supply = <&pm8941_l13>;
+		pinctrl-names = "enable", "disable";
+		pinctrl-0 = <&intr_on &ce_on>;
+		pinctrl-1 = <&intr_off &ce_off>;
+		irq-gpio = <&msmgpio 5 0x0>;
+		ce-gpio = <&msmgpio 6 0x0>;
+		vd33_en-gpio = <&msmgpio 7 0x0>;
+	};

@@ -1,0 +1,25 @@
+Bindings for fb_privacy driver
+------------------------------------------------------------
+
+Kernel module to communicate with TZ to control privacy state machine of camera/mic/leds.
+
+Required property:
+- fb,ledapp_name (string):
+	Name of the led control application in TZ that provides the driver
+	implementation.
+
+- fb,release_timeout (u32):
+	The key handler's short press timeout in ms. If the key is not released
+	before the timeout, the event will be considered a long press.
+
+- fb,key_code (u32):
+	The Linux code for the key used to toggle privacy. This should be
+	the same as the Linux code passed to the actual key handler that
+	reports the event to this driver.
+
+Example:
+	fb_privacy: fb_privacy {
+		fb,ledapp_name = "lp5521";
+		fb,release_timeout = <500>;
+		fb,key_code = <116>;
+	};

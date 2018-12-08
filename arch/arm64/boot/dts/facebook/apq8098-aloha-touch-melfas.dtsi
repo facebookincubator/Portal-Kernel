@@ -1,0 +1,27 @@
+/* Copyright (c) 2017, Facebook Inc. All rights reserved.
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License version 2 and
+ * only version 2 as published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ */
+#include <dt-bindings/gpio/gpio.h>
+
+&i2c_5 {
+	melfas_touch: melfas_mip4_ts@34 {
+		status = "okay";
+		compatible = "melfas,mip4_ts";
+		reg = <0x34>;
+		interrupt-parent = <&tlmm>;
+		interrupts = <125 0x0>;
+		vd33-supply = <&pm8998_l28>;
+		irq-gpio = <&tlmm 125 0x0>;
+		ce-gpio = <&tlmm 89 0x0>;      /* RESET */
+		vd33_en-gpio = <&tlmm 95 0x0>; /* TOUCH_EN */
+		touch-wakeup-on;
+	};
+};
