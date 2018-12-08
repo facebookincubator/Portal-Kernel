@@ -1,0 +1,62 @@
+/* Copyright (c) 2017, Facebook Inc. All rights reserved.
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License version 2 and
+ * only version 2 as published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ */
+
+/*
+ * TEMP sensor
+ */
+&i2c_4 {
+	/* Upper Board Sensor 1 */
+	tmp103b@0x71 {
+		compatible = "tmp103";
+		reg = <0x71>;
+		label = "cam_therm1";
+	};
+
+	/* Upper Board Sensor 2 */
+	tmp103c@0x72 {
+		compatible = "tmp103";
+		reg = <0x72>;
+		label = "cam_therm2";
+	};
+};
+
+/*
+ * TEMP sensor
+ */
+&i2c_6 {
+	/* AMP Sensor */
+	tmp103c@0x72 {
+		compatible = "tmp103";
+		reg = <0x72>;
+		label = "amp_therm";
+	};
+};
+
+/*
+ * TEMP sensor
+ */
+&i2c_8 {
+	/* ISP Sensor 1 */
+	tmp103c@0x71 {
+		compatible = "tmp103";
+		reg = <0x71>;
+		label = "isp_therm1";
+	};
+
+	/* ISP Sensor 2 */
+	tmp103c@0x72 {
+		compatible = "tmp103";
+		reg = <0x72>;
+		label = "isp_therm2";
+	};
+};
+

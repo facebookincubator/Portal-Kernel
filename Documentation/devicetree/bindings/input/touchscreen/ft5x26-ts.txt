@@ -1,0 +1,16 @@
+FocalTech touch controller
+
+Example:
+
+	focaltech@38{
+		compatible = "focaltech,fts";
+		reg = <0x38>;
+		interrupt-parent = <&tlmm>;
+		interrupts = <125 IRQ_TYPE_EDGE_FALLING>;
+		focaltech,reset-gpio = <&tlmm 89 GPIO_ACTIVE_LOW>;
+		focaltech,irq-gpio = <&tlmm 125 IRQ_TYPE_EDGE_FALLING>;
+		focaltech,max-touch-number = <5>;
+		focaltech,display-coords =  <0 0 800 1280>;
+		vdd-supply = <&pm8998_l28>;
+		vcc_i2c-supply = <&pm8998_l6>;
+	};

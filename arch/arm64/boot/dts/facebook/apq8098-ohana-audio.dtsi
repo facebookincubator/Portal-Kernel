@@ -1,0 +1,47 @@
+/* Copyright (c) 2017, Facebook Inc. All rights reserved.
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License version 2 and
+ * only version 2 as published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ */
+
+
+&tas5760 {
+	pwr-supply = <&pm8998_l22>;
+	amp_sdz-gpios = <&tlmm 49 GPIO_ACTIVE_LOW>;
+	hw-params {
+		analog-gain = <192>;
+		vol-left = <202>;
+		vol-right = <202>;
+	};
+};
+
+&pm8998_s4 {
+	regulator-enable-ramp-delay = <1500>;
+};
+
+&pm8998_l8 {
+	regulator-enable-ramp-delay = <5000>;
+};
+
+&iaxxxspi0 {
+	vdd-io-supply = <&pm8998_s4>;
+	vdd-core-supply = <&pm8998_l8>;
+	/delete-property/ adnc,pwren-gpio;
+	adnc,stereo-aec;
+};
+
+&soc {
+	amp_power_reg {
+		status = "disabled";
+	};
+
+	sound-9335 {
+		/delete-property/ pwr-supply;
+	};
+};

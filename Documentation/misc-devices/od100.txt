@@ -1,0 +1,74 @@
+Kernel driver od100
+=======================
+
+Supported device:
+Occupancy Detection PIR motion sensor module
+
+Data sheet:
+Not freely available
+
+Description
+-----------
+OD100 is a room occupancy detection device based on three passive infra-red
+sensors (PIR sensors) and an MCU that takes the ADC measurements of each PIR
+sensor. The ADC measurements are used to detect motions. Debounicing is used
+to translate the motion into prosence information.
+
+The host device communicates with the od100 via I2C bus. Via sysfs, the host
+can enable/disable each PIR sensor and sets the detection range & sensitivity
+for each sensor.
+
+
+SYSFS
+-----
+
+device_id
+	RO - shows device id in 32 bit hex format with the leading 0x.
+
+firmware_ver
+	RO - shows firmware build version in 32 bit hex format with the leading 0x.
+
+sensor_num
+	RO - shows number of PIR sensors (i.e. 3).
+
+sensor_range
+	RW - list of programmed sensor range values in eight steps (0 through 7).
+	     This is meant to help tune the firmware, but can be used to overwrite
+	     the firmware programmed values and dynamically change PIR range.
+
+sensor_sensitivity
+	RW - list of programmed sensor sensitivity values in eight steps (0 through 7).
+	     This is meant to help tune the firmware, but can be used to overwrite
+	     the firmware programmed values and dynamically change PIR sensitivity.
+
+sensor_detect
+	RO - 32 bit bit-mask value in decimal format that indicates presence detection
+	     within the programmed range. The sysfs_notify gets called whenever there
+	     is a value change.
+
+	     0 means no presence.
+	     1 means presence detected at PIR sensor 0.
+	     2 means presence detected at PIR sensor 1.
+	     3 means presence detected at PIR sensor 0 and 1.
+	     4 means presence detected at PIR sensor 2.
+	     5 means presence detected at PIR sensor 0 and 2.
+	     6 means presence detected at PIR sensor 1 and 2.
+	     7 means presence detected at PIR sensor 0, 1, and 2.
+
+sensor_enable
+	RW - 32 bit bit-mask value in decimal format that enables each PIR sensor
+
+	     0 disables all PIR sensors.
+	     1 enables PIR sensor 0.
+	     2 enables PIR sensor 1.
+	     3 enables PIR sensor 0 and 1.
+	     4 enables PIR sensor 2.
+	     5 enables PIR sensor 0 and 2.
+	     6 enables PIR sensor 1 and 2.
+	     7 enables PIR sensor 0, 1, and 2.
+
+disable_wake
+	RW - write 1 to disable wake up from suspend by driver interrupts
+	     wake up enabled by default
+	     writing 1 to disable_wake disables wake up
+

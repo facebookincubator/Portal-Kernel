@@ -1,0 +1,14 @@
+#
+# iaxxx codec driver
+#
+if MFD_IAXXX
+config SND_SOC_IAXXX
+	tristate "Knowles IAxxx Audio Device"
+	---help---
+	  Enable codec driver for IAxxx
+config IAXXX_PCM_MODE
+	bool "Enable PCM DAI"
+	---help---
+	This config enables IAXXX PCM
+
+endif

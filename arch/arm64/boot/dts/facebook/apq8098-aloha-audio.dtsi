@@ -1,0 +1,27 @@
+/* Copyright (c) 2018, Facebook Inc. All rights reserved.
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License version 2 and
+ * only version 2 as published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ */
+
+&soc {
+	sound-9335 {
+		/* If you change this string, please be aware that part of string
+		 * between 'aloha-' and '-snd-card' is a part of several xml files
+		 * into /vendor/system/etc/ and in some places into source there is a direct
+		 * string compare to this whole string.
+		 */
+		compatible = "facebook,aloha-snd";
+		qcom,model = "fb-aloha-snd-card";
+	};
+
+	aloha-codec-dummy {
+		compatible = "fb,deferred-probe-trigger";
+	};
+};

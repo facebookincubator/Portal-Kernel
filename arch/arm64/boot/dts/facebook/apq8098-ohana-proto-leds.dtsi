@@ -1,0 +1,67 @@
+/* Copyright (c) 2017, Facebook Inc. All rights reserved.
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License version 2 and
+ * only version 2 as published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ */
+
+#include <dt-bindings/leds/fb_led_control.h>
+
+/*
+ * Delete red, green and blue leds
+ */
+/delete-node/ &red_led;
+/delete-node/ &green_led;
+/delete-node/ &blue_led;
+
+/*
+ * This is a platform device for the camera status LED that
+ * is controlled via TZ.
+ */
+/ {
+	fb_privacy: fb_privacy {
+		fb,release_timeout = <500>;
+		fb,key_code = <113>;
+	};
+};
+
+&i2c_7 {
+	lp5521@32 {
+		compatible = "national,lp5521";
+		reg = <0x32>;
+		label = "lp5521";
+		clock-mode = /bits/ 8 <2>;
+		enable-gpio = <&tlmm 63 GPIO_ACTIVE_HIGH>;
+		led-keep-trigger;
+
+		chan0 {
+			chan-name = "red-no-support";
+			led-cur = /bits/ 8 <0x2f>;
+			max-cur = /bits/ 8 <0x5f>;
+		};
+
+		chan1 {
+			chan-name = "green-ohana";
+			led-cur = /bits/ 8 <0x2f>;
+			max-cur = /bits/ 8 <0x5f>;
+			linux,name = "green";
+			linux,default-trigger = "green";
+		};
+
+		chan2 {
+			chan-name = "blue-ohana";
+			led-cur = /bits/ 8 <0x2f>;
+			max-cur = /bits/ 8 <0x5f>;
+			linux,name = "blue";
+			linux,default-trigger = "blue";
+		};
+	};
+};
+
+/* Delete smb driver */
+/delete-node/ &smb138x;
