@@ -1,0 +1,7 @@
+Innolux ZJ140IA_01B 2160x1440 14" EDP panel
+
+Required properties:
+- compatible: should be "innolux,zj140ia-01b"
+
+This binding is compatible with the simple-panel binding, which is specified
+in simple-panel.txt in this directory.

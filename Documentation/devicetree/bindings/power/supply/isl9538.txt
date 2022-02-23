@@ -1,0 +1,87 @@
+Binding for Renesas isl9538 Li-Ion Charger
+
+Required properties:
+- compatible: Should be "renesas,isl9538"
+- reg: integer, i2c address of the device.
+- isl,charge-current: integer, maximum charging current (in uA);
+- isl,charge-voltage: integer, maximum charging voltage
+- isl,adapter-current-limit-2: integer, charging current limit
+- isl,adapter-current-limit-1: integer, charging current limit
+- isl,trickle-charging-current:
+	Usage: optional
+	Type: <u32>
+	Definition: Configures the charging current in trickle charging mode.
+	OPTIONS:
+	ISL_TRICKLE_CHARGE_CURR_256MA
+	ISL_TRICKLE_CHARGE_CURR_128MA
+	ISL_TRICKLE_CHARGE_CURR_64MA
+	ISL_TRICKLE_CHARGE_CURR_512MA
+
+- qcom,adapter-vadc :
+	Usage: optional
+	Type: phandl
+	Definition: phaldle to the corresponding VADC device to read the ADC channels.
+	This field and isl,channel-num are required to read adapter vadc.
+
+- isl,channel-num
+  Usage: optional
+  Value type: <u32>
+  Definition: Specifies the ADC channel number for reading adapter voltage. This field and
+	qcom,adapter-vadc are required to read adapter vadc.
+
+- isl,adapter-voltage-vadc-map:
+  Usage: optional
+  Type: Array of 2-tuple <u32> items. (<adapter_voltage_mv vadc_value-mv>;)
+  Description: Each item consists of adapter voltage and min vadc value.
+	The pair indicates expected minimum vadc value given the adapter voltage
+
+- isl,interval-normal
+  Usage: optional
+  Default: 5 seconds
+  Value type: <u32>
+  Description: The interval of charging monitor in seconds in normal mode
+        Normal mode means default mode except maintenance and low batt
+
+- isl,interval-maintenance
+  Usage: optional
+  Default: 10 seconds
+  Value type: <u32>
+  Definition: The interval of charging monitor in seconds in maintenance mode
+        Maintenance mode: no charging due to charging complete
+
+- isl,interval-lowbatt
+  Usage: optional
+  Default: 1 seconds
+  Value type: <u32>
+  Definition: The interval of charging monitor in seconds in low battery mode
+        Low battery mode is determined when the battery capacity is less than or equal to lowbatt-capacity
+
+- isl,lowbatt-capacity
+  Usage: optional
+  Default: 1
+  Value type: <u32>
+  Definition: The battery capacity to use the charging monitor interval defined by isl,interval-lowbatt
+
+Example:
+	isl,adapter-voltage-vadc-map =
+		< 20000 1338>,
+		<     0    0>;
+
+- isl,min-charge-adapter-voltage: Minimum adapter voltage in mV required for charger
+	to start charging.
+	isl,min-charge-adapter-voltage = <20000>;
+
+isl9538: isl9538@9 {
+	compatible = "renesas,isl9538";
+	reg = <0x9>;
+	isl,charge-voltage = <16768>; //4S battery
+	isl,charge-current = <1000>;
+	isl,adapter-current-limit-2 = <3800>;
+	isl,adapter-current-limit-1 = <2368>;
+	isl,trickle-charging-current = <ISL_TRICKLE_CHARGE_CURR_128MA>;
+	acok-gpio = <&pm660_gpios 3 0>;
+	interrupt-parent = <&spmi_bus>;
+	pinctrl-names = "default";
+	pinctrl-0 = <&charger_acok_default>;
+};
+

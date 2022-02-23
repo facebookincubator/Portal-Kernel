@@ -1,0 +1,23 @@
+TI BQ40Z50 Fuel-Gauge Power Supply bindings
+
+Required properties:
+- compatible: should be "ti,bq40z50"
+- reg: i2c address of the device
+
+Optional properties:
+- ti,fg-soc-low-thr: low battery soc threshold, valid range: 1 ~ 10
+- ti,fg-soc-recharge-thr: recharge soc threshold, valid range: 90 ~ 99
+- ti,fg-soc-static-remap: if defined, soc will be remapped as below
+  capacity reports 100 for soc range between ti,fg-soc-recharge-thr ~ 100
+  capacity reports 1 for range between 1 ~ ti,fg-soc-low-thr
+  capacity reports linear mapping from ti,fg-soc-low-thr+1 ~ ti,fg-soc-recharge-thr-1 to 2 ~ 99
+
+Example:
+
+bq40z50: bq40z50@b {
+	compatible = "ti,bq40z50";
+	reg = <0xb>;
+	ti,fg-soc-low-thr = <3>;
+	ti,fg-soc-recharge-thr = <95>;
+	ti,fg-soc-static-remap;
+};

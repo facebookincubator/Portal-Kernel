@@ -1,0 +1,7 @@
+BOE BOE-TV140WTM-NF0-WU-PLUS 2160x1440 14" EDP panel
+
+Required properties:
+- compatible: should be "boe,tv140wtmnf0wu-plus"
+
+This binding is compatible with the simple-panel binding, which is specified
+in simple-panel.txt in this directory.

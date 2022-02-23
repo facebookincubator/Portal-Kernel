@@ -1,0 +1,33 @@
+FB Fg Fuel-Gauge Power Supply bindings
+
+Required properties:
+- compatible: should be one of followings
+	"fb,fbfg_sbs"
+	"fb,fbfg_raj240045"
+- reg: i2c address of the device
+
+Optional properties:
+- fb,init_max_retries: Maximum number to retry init.
+- fb,i2c_retry_limit: Maximum number to retry i2c comm.
+- fb,monitor_period_ms: Polling period to monitor fg status.
+- fb,num_cells: Number of cells on battery.
+- fb,fg-soc-low-thr: low battery soc threshold, valid range: 1 ~ 10
+- fb,fg-soc-recharge-thr: recharge soc threshold, valid range: 90 ~ 99
+- fb,fg-soc-static-remap: if defined, soc will be remapped as below
+  capacity reports 100 for soc range between fb,fg-soc-recharge-thr ~ 100
+  capacity reports 1 for range between 1 ~ fb,fg-soc-low-thr
+  capacity reports linear mapping from fb,fg-soc-low-thr+1 ~ fb,fg-soc-recharge-thr-1 to 2 ~ 99
+
+Example:
+
+raj240045: raj240045@b {
+	compatible = "fb,fbfg_raj240045";
+	reg = <0xb>;
+	fb,init_max_retries = <10>;
+	fb,i2c_retry_limit = <10>;
+	fb,monitor_period_ms = <60000>;
+	fb,num_cells = <3>;
+	fb,fg-soc-low-thr = <3>;
+	fb,fg-soc-recharge-thr = <95>;
+	fb,fg-soc-static-remap;
+};

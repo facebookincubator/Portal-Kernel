@@ -1,0 +1,23 @@
+#
+# STMicroelectronics touchscreen driver configuration
+#
+
+config TOUCHSCREEN_ST_I2C
+	tristate "STMicroelectronics i2c touchscreen"
+	depends on TOUCHSCREEN_ST
+	help
+	  This enables support for ST touch panel over I2C based touchscreens.
+
+config TOUCHSCREEN_ST_DEBUG
+	tristate "fts_proc and stm_fts_cmd enabled"
+	depends on TOUCHSCREEN_ST
+	default n
+	help
+	  This enables fts_proc and stm_fts_cmd features for debug support.
+
+config TOUCHSCREEN_ST_FTS
+	tristate "ST FTS library"
+	depends on TOUCHSCREEN_ST
+	default n
+	help
+	  Adds the FTS library.

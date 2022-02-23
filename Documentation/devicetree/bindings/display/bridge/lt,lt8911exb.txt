@@ -1,0 +1,70 @@
+LT8911EXB DSI to eDP bridge chip
+--------------------------------
+
+This is the drm driver for Lontium LT8911 bridge IC.
+
+Required properties:
+- compatible: "lt,lt8911exb"
+- reg: i2c address of the chip, 0x29 as per datasheet
+- reset-gpios: gpio specification for reset pin (active high)
+
+- vdd-supply: Digital core 1.8V Power
+- vcc-supply: 1.8V Power for other logics
+
+Optional properties:
+- connector-override: Override connector init, and attach to panel on init
+- continuous-splash: If true, don't initialize major settings during
+  power on to use the settings from bootloader
+
+- clock-names: should be "refclk"
+- clocks: Specification for input reference clock.
+  The reference could be 25MHz.
+
+Example
+-------
+
+lt8911exb: lt8911exb@29 {
+	compatible = "lt,lt8911exb";
+	#address-cells = <1>;
+	#size-cells = <0>;
+	reg = <0x29>;
+
+	reset-gpios = <&tlmm 138 GPIO_ACTIVE_HIGH>;
+
+	vdd-supply = <&lt8911exb_vdd_ldo>;
+	vcc-supply = <&pm660_l12>;
+
+	/* Use external refclock */
+	clock-names = "refclk";
+	clocks = <&bridge_refclock 0>;
+
+	/* Override connector init, and attach to panel on init*/
+	connector-override;
+
+	/* Enable continuous splash */
+	continuous-splash;
+
+	ports {
+		#address-cells = <1>;
+		#size-cells = <0>;
+
+		port@0 {
+			reg = <0>;
+
+			edp_bridge_in: endpoint {
+				remote-endpoint = <&ext_dsi_out>;
+			};
+		};
+
+		port@1 {
+			reg = <1>;
+
+			edp_bridge_out: endpoint {
+				data-lanes = <0 1 2 3>;
+				lane-polarities = <0 0 0 0>;
+				remote-endpoint = <&edp_panel_in>;
+			};
+		};
+	};
+};
+

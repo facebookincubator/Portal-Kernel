@@ -1,0 +1,5 @@
+config FB_DEFERRED_DRV
+        tristate "Trigger deferred drivers"
+        default y
+        help
+          Dummy driver for triggering all deferred drivers

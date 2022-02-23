@@ -1,0 +1,22 @@
+Bindings for fb_privacy driver
+------------------------------------------------------------
+
+Kernel module to translate the switch state to privacy state.
+
+Required property:
+- fb,gpio_pins (u32 array):
+List of GPIO pins utilised for controlling the privacy driver.
+Pins are listed in the following order:
+<GPIO_SO1 GPIO_SO2 GPIO_PRIVACY_ENTER GPIO_MIC_PRIVACY GPIO_CAM_PRIVACY>
+
+fb,default-brightness (u8):
+Default brightness for the green LED
+
+fb,privacy-led-trigger (string):
+(Optional) Trigger name of led utilized by privacy driver.
+
+Example:
+fb_privacy: fb_privacy {
+	fb,default-brightness = /bits/ 8 <100>;
+	fb,gpio_pins = <105 106 108 118 123>;
+	fb,privacy-led-trigger = "privacy_green";

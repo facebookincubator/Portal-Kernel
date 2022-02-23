@@ -1,0 +1,19 @@
+#
+# Focaltech Touchscreen driver configuration
+#
+
+config TOUCHSCREEN_FTS_V32
+    bool "Focaltech Touchscreen"
+    default n
+    help
+      Focaltech touch driver version 3.2 for the FT5X26 chipset.
+      The FT5X26 series of chips are single chip capacitive touch panel
+      controller, with built in MCU for fast response and high accuracy.
+      Say Y here if you have Focaltech touch panel.
+      If unsure, say N.
+
+config TOUCHSCREEN_FTS_DIRECTORY
+    string "Focaltech ts directory name"
+    default "focaltech_touch"
+    depends on TOUCHSCREEN_FTS_V32
+
