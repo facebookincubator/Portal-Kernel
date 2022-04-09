@@ -1,0 +1,18 @@
+#
+# Makefile for Bosch sensors driver.
+#
+
+config BMA4XY_ACCEL
+	tristate "Bosch BMA456 Accelerometer Driver"
+	select IIO_BUFFER
+	select IIO_TRIGGERED_BUFFER
+	select REGMAP
+	select BMA4XY_ACCEL_SPI if SPI
+	help
+	 Say yes here to build support for the BMA456 Bosch accelerometer.
+
+config BOSCH_DRIVER_LOG_FUNC
+	tristate "Bosch Sensortec driver smart log function support"
+	depends on (I2C || SPI_MASTER) && SYSFS
+	help
+	 Say yes here to enable smart log function in Bosch Sensortec driver.

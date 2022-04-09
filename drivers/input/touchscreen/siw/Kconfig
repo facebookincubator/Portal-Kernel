@@ -1,0 +1,64 @@
+menu "SiW Touch Support"
+
+config TOUCHSCREEN_SIW
+	bool "Silicon Works Touch Driver Core"
+	depends on SPI_MASTER && I2C
+	default n
+	help
+	  Say Y here if you have a touchscreen interface using
+	  the Silicon Works touch device.
+
+config TOUCHSCREEN_SIW_LG4894
+	bool "Silicon Works Touch Driver for LG4894"
+	depends on TOUCHSCREEN_SIW
+	default n
+	help
+	  If your device is LG4894, say Y
+
+config TOUCHSCREEN_SIW_LG4895
+	bool "Silicon Works Touch Driver for LG4895"
+	depends on TOUCHSCREEN_SIW
+	default n
+	help
+	  If your device is LG4895, say Y
+
+config TOUCHSCREEN_SIW_LG4946
+	bool "Silicon Works Touch Driver for LG4946"
+	depends on TOUCHSCREEN_SIW
+	default n
+	help
+	  If your device is LG4946, say Y
+
+config TOUCHSCREEN_SIW_LG4951
+	bool "Silicon Works Touch Driver for LG4951"
+	depends on TOUCHSCREEN_SIW
+	default n
+	help
+	  If your device is LG4951, say Y
+
+config TOUCHSCREEN_SIW_SW1828
+	bool "Silicon Works Touch Driver for SW1828"
+	depends on TOUCHSCREEN_SIW
+	default n
+	help
+	  If your device is SW1828, say Y
+
+config TOUCHSCREEN_SIW_SW49407
+	bool "Silicon Works Touch Driver for SW49407"
+	depends on TOUCHSCREEN_SIW
+	default n
+	help
+	  If your device is SW49407, say Y
+
+config TOUCHSCREEN_SIW_SW42101
+	bool "Silicon Works Touch Driver for SW42101"
+	depends on TOUCHSCREEN_SIW
+	default n
+	help
+	  If your device is SW42101, say Y
+
+
+source "drivers/input/touchscreen/siw/mon/Kconfig"
+
+endmenu
+

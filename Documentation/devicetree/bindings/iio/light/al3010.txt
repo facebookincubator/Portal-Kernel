@@ -1,0 +1,16 @@
+* Dyna Image AL3010 I2C Ambient Light Sensor
+
+Required properties:
+- compatible: must be "al3010"
+- reg: the I2C address of the device
+
+Example:
+
+
+	al3010@1E {
+		compatible = "al3010";
+		reg = <0x1E>;
+		#io-channel-cells = <1>;
+	};
+
+

@@ -1,0 +1,44 @@
+/* Copyright (c) 2017, Facebook Inc. All rights reserved.
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License version 2 and
+ * only version 2 as published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ */
+
+/* Port BLSP1 ; BLSP1/QUP1 */
+
+/* Port BLSP2 ; BLSP1/QUP2 */
+
+/* Port BLSP3 ; BLSP1/QUP3 */
+
+/* Port BLSP4 ; BLSP1/QUP4 */
+
+/* Port BLSP5 ; BLSP1/QUP5 */
+
+/* Port BLSP6 ; BLSP1/QUP6 */
+
+/* Port BLSP7 ; BLSP2/QUP1 */
+
+/* Port BLSP8 ; BLSP2/QUP2 */
+
+/* Port BLSP9 ; BLSP2/QUP3 */
+&i2c_9 {
+	status = "okay";
+};
+
+/* Port BLSP10 ; BLSP2/QUP4 */
+&spi_10 {
+	status = "disabled";
+};
+
+/* Port BLSP11 ; BLSP2/QUP5 */
+
+/* Port BLSP12 ; BLSP2/QUP6 */
+&spi_12 {
+	status = "disabled";
+};

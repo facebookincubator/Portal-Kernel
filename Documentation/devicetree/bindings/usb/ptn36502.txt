@@ -1,0 +1,7 @@
+* NXP PTN36502 re-driver IC device tree bindings
+
+Example:
+       ptn36502@1a {
+               compatible = "nxp,ptn36502";
+               reg = <0x1a>;
+       };

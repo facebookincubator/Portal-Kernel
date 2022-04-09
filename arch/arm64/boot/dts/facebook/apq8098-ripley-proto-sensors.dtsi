@@ -1,0 +1,42 @@
+/* Copyright (c) 2018, The Linux Foundation. All rights reserved.
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License version 2 and
+ * only version 2 as published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ */
+
+&soc {
+	gpio_keys {
+		compatible = "gpio-keys";
+		input-name = "gpio-keys";
+		/* Hall sensor 2 */
+		key22 {
+			label = "HallSensor-22";
+			linux,code = <0x100>;
+			gpios = <&tlmm 22 1>;
+			linux,input-type = <1>;
+			debounce-interval = <15>;
+		};
+		/* Hall sensor 1 */
+		key24 {
+			label = "HallSensor-24";
+			linux,code = <0x101>;
+			gpios = <&tlmm 24 1>;
+			linux,input-type = <1>;
+			debounce-interval = <15>;
+		};
+		/* Hall sensor 3 */
+		key36 {
+			label = "HallSensor-36";
+			linux,code = <0x09>;
+			gpios = <&tlmm 36 1>;
+			linux,input-type = <5>;
+			debounce-interval = <15>;
+		};
+	};
+};

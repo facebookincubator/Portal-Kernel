@@ -1,0 +1,16 @@
+#
+# DBMDX character drivers configuration
+#
+config DBMDX_CHAR_CORE
+	bool "DBMDX group of character drivers"
+	depends on MFD_DBMDX
+	default n
+	help
+	  Select this option to all group of DBMDX character drivers
+
+config DBMDX_LOG
+	tristate "DBMDX Log character driver"
+	depends on DBMDX_CHAR_CORE
+	default n
+	help
+	  Select this option to get the firmware logs of all the N cores through /dev/dbmdx-N.

@@ -1,0 +1,65 @@
+/* Copyright (c) 2017, Facebook Inc. All rights reserved.
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License version 2 and
+ * only version 2 as published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ */
+#include <dt-bindings/gpio/gpio.h>
+#include <dt-bindings/input/input.h>
+
+&spi_12 {
+	cs47l35: cs47l35@0 {
+		compatible = "cirrus,cs47l35";
+		reg = <0>; /* Chip select 0 */
+		spi-max-frequency  = <25000000>;
+		spi-boot-frequency = <25000000>;
+		spi-byteperword = <8>;
+		/*spi-cpha;*/
+		/*spi-cpol;*/
+		clock-names = "cs47l35_ext_clk";
+		clocks = <&clock_gcc clk_ln_bb_clk3>;
+		interrupt-parent = <&tlmm>;
+		interrupt-controller;
+		interrupts = <80 IRQ_TYPE_EDGE_FALLING>;
+		#interrupt-cells = <2>;
+		reset-gpios = <&tlmm 25 GPIO_OPEN_DRAIN>;
+		cirrus,auxpdm-slave-mode = <1>;
+		cirrus,irq-gpios = <80 IRQ_TYPE_EDGE_FALLING>;
+		cirrus,irq-flags = <IRQ_TYPE_EDGE_FALLING>;
+		DCVDD-supply = <&cs47l35_pwr_en_reg>;
+	};
+};
+
+&soc {
+	cs47l35_pwr_en_reg: cs47l35_pwr_en_reg {
+		compatible = "regulator-fixed";
+		regulator-name = "cs47l35_pwr";
+		regulator-min-microvolt = <1800000>;
+		regulator-max-microvolt = <1800000>;
+		regulator-enable-ramp-delay = <2000>;
+		gpio = <&tlmm 75 GPIO_ACTIVE_HIGH>;
+		enable-active-high;
+
+		regulator-state-mem {
+			regulator-off-in-suspend;
+		};
+	};
+};
+
+&dai_mi2s3 {
+	qcom,msm-mi2s-rx-lines = <1>;
+	qcom,msm-mi2s-tx-lines = <2>;
+
+	pinctrl-names = "default", "sleep";
+	pinctrl-0 = <	&quat_mi2s_active
+			&quat_mi2s_sd0_active
+			&quat_mi2s_sd1_active>;
+	pinctrl-1 = <	&quat_mi2s_sleep
+			&quat_mi2s_sd0_sleep
+			&quat_mi2s_sd1_sleep>;
+};

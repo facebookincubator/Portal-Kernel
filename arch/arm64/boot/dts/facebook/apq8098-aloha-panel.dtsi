@@ -1,0 +1,239 @@
+/* Copyright (c) 2016, The Linux Foundation. All rights reserved.
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License version 2 and
+ * only version 2 as published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ */
+#include <dt-bindings/gpio/gpio.h>
+#include "../qcom/msm8998-mdss-panels.dtsi"
+
+&dsi_panel_pwr_supply_no_labibb {
+	qcom,panel-supply-entry@0 {
+		qcom,supply-min-voltage = <1800000>;
+		qcom,supply-max-voltage = <1800000>;
+		qcom,supply-post-off-sleep = <500>;
+	};
+
+	qcom,panel-supply-entry@1 {
+		reg = <1>;
+		qcom,supply-name = "vtsp_3v3";
+		qcom,supply-min-voltage = <3312000>;
+		qcom,supply-max-voltage = <3312000>;
+		qcom,supply-enable-load = <32000>;
+		qcom,supply-disable-load = <80>;
+	};
+};
+
+&mdss_mdp {
+	dsi_lp156wfa_video: qcom,mdss_dsi_lp156wfa_video {
+		qcom,mdss-dsi-panel-name = "LP156WFA 1080p video mode dsi panel";
+		qcom,mdss-dsi-panel-type = "dsi_video_mode";
+		qcom,mdss-dsi-panel-framerate = <60>;
+		qcom,mdss-dsi-virtual-channel-id = <0>;
+		qcom,mdss-dsi-stream = <0>;
+		qcom,mdss-dsi-panel-width = <1920>;
+		qcom,mdss-dsi-panel-height = <1080>;
+		qcom,mdss-dsi-h-front-porch = <48>;
+		qcom,mdss-dsi-h-back-porch = <80>;
+		qcom,mdss-dsi-h-pulse-width = <32>;
+		qcom,mdss-dsi-h-sync-skew = <0>;
+		qcom,mdss-dsi-v-back-porch = <23>;
+		qcom,mdss-dsi-v-front-porch = <3>;
+		qcom,mdss-dsi-v-pulse-width = <5>;
+		qcom,mdss-dsi-bpp = <24>;
+		qcom,mdss-dsi-mdp-trigger = "none";
+		qcom,mdss-dsi-lp11-init;
+		qcom,mdss-dsi-reset-sequence = <1 1>;
+		qcom,mdss-dsi-force-clock-lane-hs; /*At least for bringup*/
+		qcom,mdss-dsi-always-on; /*At least for bringup*/
+		qcom,mdss-dsi-bllp-eof-power-mode;
+		qcom,mdss-dsi-bllp-power-mode;
+		qcom,mdss-dsi-lane-0-state;
+		qcom,mdss-dsi-lane-1-state;
+		qcom,mdss-dsi-lane-2-state;
+		qcom,mdss-dsi-lane-3-state;
+		qcom,mdss-dsi-panel-timings =
+			[00 1D 07 07 23 22 07 07 05 03 04 00];
+		qcom,mdss-pan-physical-width-dimension = <344>;
+		qcom,mdss-pan-physical-height-dimension = <193>;
+		qcom,mdss-dsi-bl-pmic-control-type = "bl_ctrl_pwm";
+		qcom,mdss-dsi-bl-min-level = <13>;
+		qcom,mdss-dsi-bl-max-level = <255>;
+		qcom,mdss-dsi-bl-pmic-pwm-frequency = <500>;
+		qcom,mdss-dsi-bl-pmic-bank-select = <0>;
+		qcom,mdss-dsi-bl-pwm-pmi;
+		pwms = <&pmi8998_pwm_2 0 0>;
+		pwm-names = "backlight";
+		qcom,ops-panel;
+		qcom,mdss-dsi-mode-sel-gpio-state = "single_port";
+		qcom,panel-supply-entries = <&dsi_panel_pwr_supply_no_labibb>;
+	};
+
+	dsi_lp133wf5_video: qcom,mdss_dsi_lp133wf5_video {
+		qcom,mdss-dsi-panel-name = "LP133WF5 1080p video mode dsi panel";
+		qcom,mdss-dsi-panel-type = "dsi_video_mode";
+		qcom,mdss-dsi-panel-framerate = <60>;
+		qcom,mdss-dsi-virtual-channel-id = <0>;
+		qcom,mdss-dsi-stream = <0>;
+		qcom,mdss-dsi-panel-width = <1920>;
+		qcom,mdss-dsi-panel-height = <1080>;
+		qcom,mdss-dsi-h-front-porch = <48>;
+		qcom,mdss-dsi-h-back-porch = <80>;
+		qcom,mdss-dsi-h-pulse-width = <32>;
+		qcom,mdss-dsi-h-sync-skew = <0>;
+		qcom,mdss-dsi-v-back-porch = <23>;
+		qcom,mdss-dsi-v-front-porch = <3>;
+		qcom,mdss-dsi-v-pulse-width = <5>;
+		qcom,mdss-dsi-bpp = <24>;
+		qcom,mdss-dsi-mdp-trigger = "none";
+		qcom,mdss-dsi-lp11-init;
+		qcom,mdss-dsi-reset-sequence = <1 1>;
+		qcom,mdss-dsi-force-clock-lane-hs; /*At least for bringup*/
+		qcom,mdss-dsi-always-on; /*At least for bringup*/
+		qcom,mdss-dsi-bllp-eof-power-mode;
+		qcom,mdss-dsi-bllp-power-mode;
+		qcom,mdss-dsi-lane-0-state;
+		qcom,mdss-dsi-lane-1-state;
+		qcom,mdss-dsi-lane-2-state;
+		qcom,mdss-dsi-lane-3-state;
+		qcom,mdss-dsi-panel-timings = [00 1D 07 07 23 22 07 07 05 03 04 00];
+		qcom,mdss-dsi-t-clk-post = <0x0d>;
+		qcom,mdss-dsi-t-clk-pre = <0x2d>;
+		qcom,mdss-pan-physical-width-dimension = <293>;
+		qcom,mdss-pan-physical-height-dimension = <165>;
+		qcom,mdss-dsi-bl-pmic-control-type = "bl_ctrl_pwm";
+		qcom,mdss-dsi-bl-min-level = <13>;
+		qcom,mdss-dsi-bl-max-level = <255>;
+		qcom,mdss-dsi-bl-pmic-pwm-frequency = <1000>;
+		qcom,mdss-dsi-bl-pmic-bank-select = <0>;
+		qcom,mdss-dsi-bl-pwm-pmi;
+		pwms = <&pmi8998_pwm_2 0 0>; /* BACKLIGHT_PWM */
+		pwm-names = "backlight";
+		qcom,ops-panel;
+		qcom,mdss-dsi-mode-sel-gpio-state = "single_port";
+		qcom,panel-supply-entries = <&dsi_panel_pwr_supply_no_labibb>;
+	};
+};
+
+&mdss_dsi {
+	hw-config = "single_dsi";
+};
+
+&mdss_dsi0 {
+	qcom,dsi-pref-prim-pan = <&dsi_lp156wfa_video>;
+	qcom,platform-enable-gpio = <&pm8998_gpios 20 0>; /* BACKLIGHT_PWR_EN */
+	qcom,platform-reset-gpio = <&tlmm 94 0>; /* LCD_RST_N */
+	qcom,platform-reset-gpio-always-on; /* Always on reset signal */
+	qcom,platform-bklight-en-gpio = <&tlmm 9 0>; /* BACKLIGHT_EN */
+	pinctrl-0 = <&mdss_dsi_active>;
+	pinctrl-1 = <&mdss_dsi_suspend>;
+	vtsp_3v3-supply = <&pm8998_l28>;
+};
+
+&mdss_dsi1 {
+	status = "disabled";
+};
+
+&pm8998_gpios {
+        gpio@d300 { /* GPIO 20 - BACKLIGHT_PWR_EN */
+		qcom,mode = <1>;
+		qcom,pull = <5>;
+		qcom,vin-sel = <0>;
+		qcom,src-sel = <0>;
+		qcom,invert = <1>;
+		qcom,out-strength = <1>;
+		qcom,master-en = <1>;
+		status = "ok";
+        };
+};
+
+&mdss_dsi_active {
+	mux {
+		pins = "gpio94", "gpio91", "gpio9", "gpio90";
+	};
+
+	config {
+		pins = "gpio94", "gpio91", "gpio9", "gpio90";
+	};
+};
+
+&mdss_dsi_suspend {
+	mux {
+		pins = "gpio94", "gpio91", "gpio9", "gpio90";
+	};
+
+	config {
+		pins = "gpio94", "gpio91", "gpio9", "gpio90";
+	};
+};
+
+/* Enable PMI-LPG2 (GPIO5) for backlight PWM */
+&pmi8998_pwm_2 {
+	status = "ok";
+};
+
+&pmi8998_gpios {
+	/* PMI8998 GPIO5 for LGP/PWM2 mode */
+	gpio@c400 {
+		status = "ok";
+		qcom,mode = <1>;
+		qcom,output-type = <0>;
+		qcom,invert = <0>;
+		qcom,pull = <5>;
+		qcom,vin-sel = <0>;
+		qcom,src-sel = <2>;
+		qcom,out-strength = <1>;
+		qcom,master-en = <1>;
+	};
+};
+
+&i2c_8 {
+	sn65dsix6: sn65dsix6@0x2c {
+		compatible = "sn65dsi86_dsi2edp";
+		reg = <0x2c>;
+		/* EDP_PWR_EN */
+		platform-pwr-gpios = <&tlmm 91 GPIO_ACTIVE_HIGH>;
+		/* BRIDGE_EN */
+		platform-en-gpios = <&tlmm 90 GPIO_ACTIVE_HIGH>;
+		/* EDP_TP_EN */
+		platform-touch-en-gpios = <&tlmm 95 GPIO_ACTIVE_HIGH>;
+		continuous-running;
+		aux-i2c-addr = <0x50>;
+		dsi_panel_node = <&dsi_lp156wfa_video>;
+		sn65dsix6,reg-init = [
+			00 0a 06 0a /* SN65DSI86_PLL_REFCLK_CFG	   = 0x06 - REFCLK 27MHz ; 10ms sleep */
+			00 10 20 01 /* SN65DSI86_DSI_CFG1	   = 0x26 - Single 4 DSI lanes ; 1ms sleep */
+			00 12 53 01 /* SN65DSI86_DSI_CHA_CLK_RANGE = 0x1b - DSI CLK FREQ 415.9MHz ; 1ms sleep */
+			00 5a 05 01 /* SN65DSI86_FRAMING_CFG	   = 0x05 - enhanced framing and ASSR; 1ms sleep */
+			00 93 20 01 /* SN65DSI86_DP_SSC_CFG	   = 0x20 - Pre0dB 2 DP lanes no SSC ; 1ms sleep */
+			00 94 80 01 /* SN65DSI86_DP_CFG		   = 0x80 - L0mV HBR ; 1ms sleep */
+			00 0d 01 0a /* SN65DSI86_PLL_EN		   = 0x01 - PLL ENABLE ; 10ms sleep */
+			02 0a 87 ff /* SN65DSI86_PLL_REFCLK_CFG	          - Poll: PLL lock (1 << 7) != 0x00 ; 256ms sleep */
+			00 95 00 01 /* SN65DSI86_TRAINING_CFG	   = 0x00 - POST2-Cursor2 0dB ; 1ms sleep */
+			01 95 00 0A /* Read SN65DSI86_TRAINING_CFG        ; 10ms sleep */
+			00 64 01 01 /* DPCD                        = 0x0010A - Sink to Enable ASSR; 1ms sleep */
+			00 74 00 01 /* 1ms */
+			00 75 01 01 /* 1ms */
+			00 76 0a 01 /* 1ms */
+			00 77 01 01 /* 1ms */
+			00 78 81 0A /* 10ms */
+			00 96 0a 14 /* SN65DSI86_ML_TX_MODE        = 0x0a - Semi-Auto TRAIN ; 20ms sleep */
+			01 96 00 0a /* Read SN65DSI86_ML_TX_MODE          - Verify Traning was successful ; 10ms sleep */
+		];
+
+		sn65dsix6,reg-enable = [
+			00 3c 00 01 /* SN65DSI86_COLOR_BAR_CFG     = 0x00 - Disable Color BAR ; 1ms sleep */
+			00 5a 0d 01 /* SN65DSI86_FRAMING_CFG	   = 0x0d - (?0x0c) enhanced framing and VStream enable; 1ms sleep */
+		];
+
+		sn65dsix6,reg-disable = [
+			00 5a 04 01 /* SN65DSI86_FRAMING_CFG	   = 0x05 - enhanced framing and VStream disable; 1ms sleep */
+		];
+	};
+};
+

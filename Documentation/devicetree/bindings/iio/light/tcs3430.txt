@@ -1,0 +1,14 @@
+* AMS TCS3430 Color and Ambient Light Sensor
+
+Required properties:
+- compatible: must be "tcs3430"
+- reg: the I2C address of the device
+
+Example:
+
+
+        tcs3430@0x39 {
+                compatible = "tcs3430";
+                reg = <0x39>;
+        };
+

@@ -1,0 +1,183 @@
+/* Copyright (c) 2017, Facebook Inc. All rights reserved.
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License version 2 and
+ * only version 2 as published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ */
+
+/*
+ * Delete green and blue leds
+ */
+/delete-node/ &green_led;
+/delete-node/ &blue_led;
+
+/*
+ * White LED connected to PMI
+ */
+&red_led {
+	label = "rgb";
+	qcom,id = <3>;
+	qcom,mode = "pwm";
+	pwms = <&pmi8998_pwm_5 0 0>;
+	qcom,pwm-us = <1000>;
+	qcom,max-current = <12>;
+	qcom,default-state = "off";
+	linux,name = "white";
+	/delete-property/ linux,default-trigger;
+};
+
+/*
+ * This is a platform device for the camera status LED that
+ * is controlled via TZ.
+ */
+/ {
+	fb_privacy: fb_privacy {
+		fb,ledapp_name = "ledctrl";
+	};
+};
+
+/*
+ * Side breathing LEDs
+ */
+&i2c_6 {
+	tlc59116@69 {
+		#address-cells = <1>;
+		#size-cells = <0>;
+		compatible = "ti,tlc59116";
+		reg = <0x69>;
+
+		R0@0 {
+			label = "R0";
+			reg = <0x0>;
+		};
+		R1@1 {
+			label = "R1";
+			reg = <0x1>;
+		};
+		R2@2 {
+			label = "R2";
+			reg = <0x2>;
+		};
+		R3@3 {
+			label = "R3";
+			reg = <0x3>;
+		};
+		R4@4 {
+			label = "R4";
+			reg = <0x4>;
+		};
+		G0@5 {
+			label = "G0";
+			reg = <0x5>;
+		};
+		G1@6 {
+			label = "G1";
+			reg = <0x6>;
+		};
+		G2@7 {
+			label = "G2";
+			reg = <0x7>;
+		};
+		G3@8 {
+			label = "G3";
+			reg = <0x8>;
+		};
+		G4@9 {
+			label = "G4";
+			reg = <0x9>;
+		};
+		B0@A {
+			label = "B0";
+			reg = <0xA>;
+		};
+		B1@B {
+			label = "B1";
+			reg = <0xB>;
+		};
+		B2@C {
+			label = "B2";
+			reg = <0xC>;
+		};
+		B3@D {
+			label = "B3";
+			reg = <0xD>;
+		};
+		B4@E {
+			label = "B4";
+			reg = <0xE>;
+		};
+	};
+
+	tlc59116@6A {
+		#address-cells = <1>;
+		#size-cells = <0>;
+		compatible = "ti,tlc59116";
+		reg = <0x6A>;
+
+		R5@0 {
+			label = "R5";
+			reg = <0x0>;
+		};
+		R6@1 {
+			label = "R6";
+			reg = <0x1>;
+		};
+		R7@2 {
+			label = "R7";
+			reg = <0x2>;
+		};
+		R8@3 {
+			label = "R8";
+			reg = <0x3>;
+		};
+		R9@4 {
+			label = "R9";
+			reg = <0x4>;
+		};
+		G5@5 {
+			label = "G5";
+			reg = <0x5>;
+		};
+		G6@6 {
+			label = "G6";
+			reg = <0x6>;
+		};
+		G7@7 {
+			label = "G7";
+			reg = <0x7>;
+		};
+		G8@8 {
+			label = "G8";
+			reg = <0x8>;
+		};
+		G9@9 {
+			label = "G9";
+			reg = <0x9>;
+		};
+		B5@A {
+			label = "B5";
+			reg = <0xA>;
+		};
+		B6@B {
+			label = "B6";
+			reg = <0xB>;
+		};
+		B7@C {
+			label = "B7";
+			reg = <0xC>;
+		};
+		B8@D {
+			label = "B8";
+			reg = <0xD>;
+		};
+		B9@E {
+			label = "B9";
+			reg = <0xE>;
+		};
+	};
+};

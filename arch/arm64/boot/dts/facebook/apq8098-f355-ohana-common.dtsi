@@ -1,0 +1,61 @@
+/* Copyright (c) 2016, The Linux Foundation. All rights reserved.
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License version 2 and
+ * only version 2 as published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ */
+
+
+&pm8998_gpios {
+	gpio@d100 { /* GPIO 18 - BACKLIGHT_PWR_EN */
+		status = "ok";
+	};
+};
+
+&mdss_dsi1 {
+	qcom,dsi-pref-prim-pan = <&dsi_b101ean024_video>;
+	qcom,platform-reset-gpio = <&tlmm 97 0>; /* LCD_RST_N */
+	pinctrl-0 = <&mdss_dsi1_active>;
+	pinctrl-1 = <&mdss_dsi1_suspend>;
+	dispvcc_3v3-supply = <&pm8998_l16>;
+	qcom,platform-enable-gpio = <&pm8998_gpios 18 0>; /* BACKLIGHT_PWR_EN */
+	status = "okay";
+};
+
+&mdss_dsi0 {
+	status = "disabled";
+};
+
+&tlmm {
+	mdss_dsi1_active: mdss_dsi1_active {
+		mux {
+			pins = "gpio97";
+			function = "gpio";
+		};
+
+		config {
+			pins = "gpio97";
+			drive-strength = <8>; /* 8 mA */
+			bias-disable = <0>; /* no pull */
+		};
+	};
+
+	mdss_dsi1_suspend: mdss_dsi1_suspend {
+		mux {
+			pins = "gpio97";
+			function = "gpio";
+		};
+
+		config {
+			pins = "gpio97";
+			drive-strength = <2>; /* 2 mA */
+			bias-pull-down; /* pull down */
+		};
+	};
+};
+

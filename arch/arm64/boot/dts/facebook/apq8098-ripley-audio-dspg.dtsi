@@ -1,0 +1,101 @@
+/* Copyright (c) 2018, Facebook Inc. All rights reserved.
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License version 2 and
+ * only version 2 as published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ */
+#include <dt-bindings/sound/dbmdx/dbmd7_fw_const_extra.h>
+#include <dt-bindings/sound/dbmdx/dbmd7_fw_api.h>
+
+&spi_1 {
+	dbmd7_spi:dbmd7_interface@0x0  {
+		compatible = "dspg,dbmd7-spi";
+		reg = <0>;
+		#address-cells = <1>;
+		#size-cells = <0>;
+		spi-max-frequency = <12500000>;
+		read-chunk-size  = <0x2000> ;
+		write-chunk-size = <0x8000> ;
+		dma_min_buffer_size = <0>;
+		reset-gpio = <&tlmm 92 0>; /* GPX1.3 */
+		wakeup-gpio = <&tlmm 49 0>; /* GPA0.1 */
+		rx-ready-gpio = <&tlmm 53 0>; /* GPX1.6 */
+		host-wakeup-gpio = <&tlmm 54 0>; /* GPX1.5 */
+		multi-interface-support = <1>;
+		cd-interfaces = <&dbmd7_spi >;
+		primary-interfaces = <0 0 0 0>;
+		primary-preboot-firmware-name = "dbmd7_preboot_fw.bin";
+    /* default fw loaded at boot */
+		primary-firmware-name = "dbmd7_va_fw.bin";
+    /* fw with 3p algo loaded with override */
+		primary-firmware-name-3p = "dbmd7_va_fw_3p.bin";
+    /* fw with 1p algo loaded with override */
+		primary-firmware-name-1p = "dbmd7_va_fw_1p.bin";
+		host-speeds = <0x0000 0 0 5000000
+			     0x0000 0 0 15000000
+			     0x0000 0 0 15000000
+			     0x0000 0 0 15000000 >;
+		master-clk-rate = <24576000>;
+		/* constant-clk-rate = <32768>; */
+		firmware_id = <0xdb70 0xdb71>;
+		use_gpio_for_wakeup = <0>; /* Use wakeup gpio */
+		wakeup_set_value = <0>;  /* Value to write to wakeup gpio */
+		min_samples_chunk_size = <128>;
+		/* Send FW by command, Verify chip id, Send preboot */
+		boot_options = <0x2201>;
+		amodel_options = <3>;
+		rx_ready_host_wakeup_gpio = <0xd2d3>;
+		/* Start Addr, End Addr, Value */
+		memset_params = <0x00400000 0x007cffff 0x00000000>;
+		clock-names = "dbmdx_constant_clk";
+		clocks = <&clock_gcc clk_ln_bb_clk2>;
+		/* command  priority  id    reg_num  val1  val2  val3 */
+		init_cfg_reg_list = <
+			WRITE_REG_DUMMY 0x00 0x00 0x00 0x00 0x00 0x00
+			WRITE_REG_DUMMY 0x00 0x00 0x00 0x00 0x00 0x00
+			WRITE_REG_DUMMY 0x00 0x00 0x00 0x00 0x00 0x00
+			WRITE_REG_DUMMY 0x00 0x00 0x00 0x00 0x00 0x00
+
+			WRITE_REG_TYPE_16  PRIORITY_RUN_ON_IDLE_ISR
+			MSG_ID_FW  REG_FW__MEMORY_MANAGEMENT  0x445 0x00 0x00
+
+			WRITE_REG_TYPE_16  PRIORITY_RUN_ON_IDLE_ISR
+			MSG_ID_RTOS  REG_RTOS__TIMER_FREQ  0x3e8 0x00 0x00
+
+			WRITE_REG_MSLEEP_MSEC  0x00  0x00  0x00	20  0x00 0x00
+
+			WRITE_REG_TYPE_16  PRIORITY_RUN_ON_IDLE_ISR
+			MSG_ID_FW  REG_FW__MAX_MSG_LENGTH  0x1FF0 0x00 0x00
+
+			WRITE_REG_DUMMY 0x00 0x00 0x00 0x00 0x00 0x00
+			WRITE_REG_DUMMY 0x00 0x00 0x00 0x00 0x00 0x00
+			WRITE_REG_DUMMY 0x00 0x00 0x00 0x00 0x00 0x00
+			WRITE_REG_DUMMY 0x00 0x00 0x00 0x00 0x00 0x00
+			WRITE_REG_DUMMY 0x00 0x00 0x00 0x00 0x00 0x00
+		>;
+		core_log_watermark = <0x0c00>;
+		fifo_en_mask = <0x000e>; /* 1=audio, 2=lp, 4=hf0, 8=hf1 */
+		platform_id = <1>;
+		fw_complete;
+		dspg,initial-usecase;
+		dbmdx_codec: dbmdx-codec {
+			compatible = "dspg,dbmdx-codec";
+			#sound-dai-cells = <0>;
+		};
+
+		dbmdx_mha: dbmdx-mha {
+			compatible = "dspg,dbmdx-mha";
+			dspg,firmware-name = "mh-acoustics-ripley.bin";
+			dspg,skip-fw-tuning;
+		};
+
+		dbmdx_log: dbmdx-log {
+			compatible = "dspg,dbmdx-log";
+		};
+	};
+};

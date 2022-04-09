@@ -1,0 +1,86 @@
+/* Copyright (c) 2018, Facebook Inc. All rights reserved.
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License version 2 and
+ * only version 2 as published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ */
+
+#include "apq8098-ripley-proto2.dtsi"
+#include "apq8098-ripley-preevt-headless.dtsi"
+#include "apq8098-ripley-preevt-aw9109.dtsi"
+#include "apq8098-ripley-preevt-sensors.dtsi"
+
+&i2c_5 {
+	/* Color and ALS sensor */
+	/delete-node/ tcs3430@0x39;
+
+	/* Temperature sensor */
+	/delete-node/ tmp103c@0x72;
+};
+
+/ {
+	/delete-node/ pwm-motor;
+};
+
+&pmi8998_pwm_2 {
+	status = "disabled";
+};
+
+&pmi8998_gpios {
+	/* PMI8998 GPIO5 for LGP/PWM2 mode */
+	gpio@c400 {
+		status = "disabled";
+		/delete-property/ qcom,mode;
+		/delete-property/ qcom,output-type;
+		/delete-property/ qcom,invert;
+		/delete-property/ qcom,pull;
+		/delete-property/ qcom,vin-sel;
+		/delete-property/ qcom,src-sel;
+		/delete-property/ qcom,out-strength;
+		/delete-property/ qcom,master-en;
+	};
+};
+
+&spmi_bus {
+	qcom,pmi8998@3 {
+		qcom,leds@d000 {
+			led-keep-trigger;
+
+			green_led: qcom,rgb_1 {
+				label = "rgb";
+				qcom,id = <4>;
+				qcom,mode = "pwm";
+				pwms = <&pmi8998_pwm_4 0 0>;
+				qcom,pwm-us = <1000>;
+				qcom,max-current = <12>;
+				qcom,default-state = "off";
+				linux,name = "green";
+				linux,default-trigger = "green";
+			};
+		};
+	};
+};
+
+/ {
+	fb_privacy: fb_privacy {
+		/delete-property/ fb,ledapp_name;
+	};
+};
+
+/* Delete smb driver */
+/delete-node/ &smb138x;
+
+/* Enable TDM QUAT */
+&snd_9335 {
+        dbmdx,tdm-quat;
+};
+
+/* disable LDO19 */
+&pm8998_l19 {
+	status = "disabled";
+};

@@ -1,0 +1,14 @@
+Presence detection using camera
+-------------------------------------------------------------------------
+Driver that propagates presence detection events from camera to user space.
+
+Required properties:
+- compatible : pd_camera
+- gpio-irq : GPIO that generates an interrupt when presence is detected.
+
+Example:
+	pd_camera: pd_camera {
+		compatible = "pd_camera";
+		gpio-irq = <&tlmm 28 1>;
+	};
+

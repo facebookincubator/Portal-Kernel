@@ -1,0 +1,5 @@
+menuconfig MYRIAD_FLASHER
+	tristate "Myriad flash over SPI support"
+	depends on SPI
+	---help---
+	  Myriad flash over SPI support

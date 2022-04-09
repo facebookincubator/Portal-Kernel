@@ -1,0 +1,156 @@
+#
+# Focaltech Touchscreen driver configuration
+#
+
+config TOUCHSCREEN_FTS
+	bool "Focaltech Touchscreen"
+	depends on I2C
+	default n
+	help
+	  Say Y here if you have Focaltech touch panel.
+	  If unsure, say N.
+
+config TOUCHSCREEN_FTS_DIRECTORY
+	string "Focaltech ts directory name"
+	default "focaltech_touch"
+	depends on TOUCHSCREEN_FTS
+
+config TOUCHSCREEN_FTS_INTERNAL_DEBUG
+	bool "For touch internal testing"
+	depends on TOUCHSCREEN_FTS
+	default n
+	help
+	  Say Y here to enable Focaltech touch internal testing.
+
+config TOUCHSCREEN_FTS_DEBUG_EN
+	bool "show debug log info"
+	depends on TOUCHSCREEN_FTS
+	default n
+	help
+	  Say Y here to enable Focaltech debug message.
+
+config TOUCHSCREEN_FTS_MT_PROTOCOL_B_EN
+	bool "Linux MultiTouch Protocol B"
+	depends on TOUCHSCREEN_FTS
+	default y
+	help
+	  Say Y here to enable Protocol B otherwise use Protocol A.
+
+config TOUCHSCREEN_FTS_REPORT_PRESSURE_EN
+	bool "Report Pressure in multitouch"
+	depends on TOUCHSCREEN_FTS
+	default y
+	help
+	  Say Y here to enable Report Pressure in multitouch.
+
+config TOUCHSCREEN_FTS_GESTURE_EN
+	bool "Gesture function enable"
+	depends on TOUCHSCREEN_FTS
+	default n
+	help
+	  Say Y here to enable Gesture function.
+	  If unsure, say N.
+
+config TOUCHSCREEN_FTS_ESDCHECK_EN
+	bool "ESD check & protection"
+	depends on TOUCHSCREEN_FTS
+	default n
+	help
+	  Say Y here to enable ESD check & protection.
+	  If unsure, say N.
+
+config TOUCHSCREEN_FTS_TEST_EN
+	bool "Production test enable"
+	depends on TOUCHSCREEN_FTS
+	default n
+	help
+	  Say Y here to enable Production test.
+	  If unsure, say N.
+
+config TOUCHSCREEN_FTS_GLOVE_EN
+	bool "Touchscreen Glove mode enable"
+	depends on TOUCHSCREEN_FTS
+	default n
+	help
+	  Say Y here to enable touchscreen glove mode.
+	  If unsure, say N.
+
+config TOUCHSCREEN_FTS_COVER_EN
+	bool "cover enable"
+	depends on TOUCHSCREEN_FTS
+	default n
+	help
+	  Say Y here to enable cover.
+	  If unsure, say N.
+
+config TOUCHSCREEN_FTS_CHARGER_EN
+	bool "Charger enable"
+	depends on TOUCHSCREEN_FTS
+	default n
+	help
+	  Say Y here to enable Charger.
+	  If unsure, say N.
+
+config TOUCHSCREEN_FTS_PSENSOR_EN
+	bool "Proximity sensor enable"
+	depends on TOUCHSCREEN_FTS
+	default n
+	help
+	  Say Y here to enable Proximity sensor.
+	  If unsure, say N.
+
+config TOUCHSCREEN_FTS_SYSFS_NODE_EN
+	bool "Sys node enable"
+	depends on TOUCHSCREEN_FTS
+	default y
+	help
+	  Say Y here to enable sys node.
+
+config TOUCHSCREEN_FTS_APK_NODE_EN
+	bool "APK mode enable"
+	depends on TOUCHSCREEN_FTS
+	default n
+	help
+	  Say Y here to enable APK mode.
+
+config TOUCHSCREEN_FTS_POWER_SOURCE_CUST_EN
+	bool "Customer power enable"
+	depends on TOUCHSCREEN_FTS
+	default y
+	help
+	  Say Y here to enable customer power.
+
+config TOUCHSCREEN_FTS_POWER_SOURCE_OFF_ON_SUSPEND_EN
+	bool "Suspend enable for customer power"
+	depends on TOUCHSCREEN_FTS
+	default y
+	help
+	  Say Y here to enable suspend for customer power.
+
+config TOUCHSCREEN_FTS_AUTO_UPGRADE_EN
+	bool "Auto upgrade, please keep enable"
+	depends on TOUCHSCREEN_FTS
+	default y
+	help
+	  Say Y here to enable auto upgrade.
+
+config TOUCHSCREEN_FTS_AUTO_UPGRADE_FOR_LCD_CFG_EN
+	bool "Auto upgrade for lcd cfg"
+	depends on TOUCHSCREEN_FTS
+	default n
+	help
+	  Say Y here to enable auto upgrade for lcd cfg.
+
+config TOUCHSCREEN_FTS_AUTO_CLB_EN
+	bool "Auto cb check"
+	depends on TOUCHSCREEN_FTS
+	default n
+	help
+	  Say Y here to enable auto cb check.
+
+config TOUCHSCREEN_FTS_UPGRADE_FW_APP
+	string "Enable firmware path for upgrade"
+	depends on TOUCHSCREEN_FTS
+	default "include/firmware/FT8716_app_sample.fw"
+	help
+	  Say Y here to enable firmware path for update.

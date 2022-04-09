@@ -1,0 +1,12 @@
+Bindings for fb,dummy_platform driver
+------------------------------------------------------------
+
+Dummy platform driver
+
+Required property:
+- compatible: fb,dummy_platform
+
+Example:
+	my_dummy: my_dummy {
+		compatible = "fb,deferred_probe_trigger";
+	};

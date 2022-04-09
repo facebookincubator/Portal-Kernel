@@ -1,0 +1,66 @@
+/* Copyright (c) 2018, Facebook Inc. All rights reserved.
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License version 2 and
+ * only version 2 as published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ */
+
+&soc {
+	/delete-node/ lp556p_en_reg;
+};
+
+&tlmm {
+	aw9109_irq_gpio {
+		aw9109_irq_active: aw9109_irq_active {
+			mux {
+				pins = "gpio9";
+				function = "gpio";
+			};
+			config {
+				pins = "gpio9";
+				bias-pull-up;
+			};
+		};
+
+		aw9109_irq_suspend: aw9109_irq_suspend {
+			mux {
+				pins = "gpio9";
+				function = "gpio";
+			};
+			config {
+				pins = "gpio9";
+				bias-pull-up;
+			};
+		};
+	};
+};
+
+&i2c_5 {
+	/delete-node/ lm96163@0x4c;
+	/delete-node/ lp5569@0x32;
+
+	aw9109_led@2c {
+		compatible = "awinic,aw9109_led";
+		reg = <0x2c>;
+		reset-gpio = <&tlmm 96 0>;
+		irq-gpio = <&tlmm 9 0>;
+		status = "okay";
+
+		pinctrl-names = "default", "sleep";
+		pinctrl-0 = <&aw9109_irq_active>;
+		pinctrl-1 = <&aw9109_irq_suspend>;
+
+		aw9109,led {
+			aw9109,name = "aw9109_led";
+			aw9109,imax = <1>;
+			aw9109,brightness = <128>;
+			aw9109,max_brightness = <255>;
+		};
+	};
+};
+

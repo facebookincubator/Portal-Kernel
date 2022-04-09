@@ -1,0 +1,420 @@
+/* Copyright (c) 2018, Facebook Inc. All rights reserved.
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License version 2 and
+ * only version 2 as published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ */
+
+#include "apq8098-aloha-common.dtsi"
+
+/*
+ * Thermal Sensors
+ */
+&pm8998_vadc {
+	chan@4d {
+		label = "apq_therm";
+	};
+
+	chan@4e {
+		label = "pm8998_therm";
+	};
+
+	chan@4f {
+		label = "ufs_therm";
+	};
+
+	chan@50 {
+		label = "dcdc_4v2_therm";
+	};
+
+	chan@51 {
+		label = "quiet_therm";
+	};
+};
+
+&pm8998_adc_tm {
+	chan@4d {
+		label = "apq_therm";
+	};
+
+	chan@4e {
+		label = "pm8998_therm";
+	};
+
+	chan@4f {
+		label = "ufs_therm";
+	};
+
+	chan@50 {
+		label = "dcdc_4v2_therm";
+	};
+
+	chan@51 {
+		label = "quiet_therm";
+	};
+};
+
+&soc {
+	qcom,sensor-information {
+		qcom,sensor-information-23 {
+			qcom,sensor-name = "apq_therm";
+		};
+
+		qcom,sensor-information-24 {
+			qcom,sensor-name = "pm8998_therm";
+		};
+
+		qcom,sensor-information-25 {
+			qcom,sensor-name = "ufs_therm";
+		};
+
+		qcom,sensor-information-26 {
+			qcom,sensor-name = "dcdc_4v2_therm";
+		};
+
+		qcom,sensor-information-27 {
+			qcom,sensor-name = "quiet_therm";
+		};
+	};
+
+	qcom,qbt1000 {
+		status = "disabled";
+	};
+
+	gpio_keys {
+		/delete-node/ vol_up;
+	};
+};
+
+/*
+ * Display
+ */
+&mdss_hdmi_tx {
+	pinctrl-names = "hdmi_hpd_active", "hdmi_ddc_active", "hdmi_cec_active",
+				"hdmi_active", "hdmi_sleep";
+	pinctrl-0 = <&mdss_hdmi_5v_active  &mdss_hdmi_hpd_active
+			&mdss_hdmi_ddc_suspend &mdss_hdmi_cec_suspend>;
+	pinctrl-1 = <&mdss_hdmi_5v_active &mdss_hdmi_hpd_active
+			&mdss_hdmi_ddc_active &mdss_hdmi_cec_suspend>;
+	pinctrl-2 = <&mdss_hdmi_5v_active &mdss_hdmi_hpd_active
+			&mdss_hdmi_cec_active &mdss_hdmi_ddc_suspend>;
+	pinctrl-3 = <&mdss_hdmi_5v_active &mdss_hdmi_hpd_active
+			&mdss_hdmi_ddc_active &mdss_hdmi_cec_active>;
+	pinctrl-4 = <&mdss_hdmi_5v_suspend &mdss_hdmi_hpd_suspend
+			&mdss_hdmi_ddc_suspend &mdss_hdmi_cec_suspend>;
+	qcom,primary_panel;
+
+	qcom,regs-dump-hdmi = <0x00000 0x0050c>;
+	qcom,regs-dump-names-hdmi = "HDMI";
+};
+
+
+&mdss_dsi {
+	status = "disabled";
+};
+
+
+&mdss_mdp {
+	qcom,mdss-pref-prim-intf = "hdmi";
+};
+
+&mdss_dp_ctrl {
+	status = "disabled";
+};
+
+&sde_hdmi {
+	qcom,display-type = "primary";
+};
+
+&mdss_hdmi_pll {
+	compatible = "qcom,mdss_hdmi_pll_8998_1p8";
+};
+
+/*
+ * BLSP
+ */
+&i2c_4 {
+	tmp103c@0x72 {
+		compatible = "tmp103";
+		reg = <0x72>;
+		label = "apq_bottom";
+	};
+};
+
+&i2c_5 {
+	lm96163@0x4c {
+		compatible = "lm96163";
+		reg = <0x4c>;
+	};
+};
+
+&i2c_8 {
+	/* Accelerometer BMA250E*/
+	bma250@18 {
+		compatible = "bosch,bma250e";
+		reg = <0x18>;
+		interrupt-parent = <&tlmm>;
+		interrupts = <117 (IRQ_TYPE_LEVEL_HIGH | IRQ_TYPE_EDGE_RISING)>;
+	};
+};
+
+/*
+ * Privacy
+ */
+
+/* Delete red, green and blue leds */
+/delete-node/ &red_led;
+/delete-node/ &green_led;
+/delete-node/ &blue_led;
+
+/*
+ * This is a platform device for the camera status LED that
+ * is controlled via TZ.
+ */
+/ {
+	fb_privacy: fb_privacy {
+		fb,ledapp_name = "lp5521";
+		fb,release_timeout = <500>;
+		fb,key_code = <113>;
+		fb,default-brightness = /bits/ 8 <50>;
+	};
+};
+
+
+/*
+ * USB
+ */
+
+&pmi8998_pdphy {
+	qcom,default-sink-caps = <5000 0>; /* 5V @ 0A */
+};
+
+&qusb_phy0 {
+	reg = <0x0c012000 0x2a8>,
+	      <0x01fcb24c 0x4>;
+	reg-names = "qusb_phy_base",
+			"tcsr_clamp_dig_n_1p8";
+	qcom,qusb-phy-init-seq =
+				/* <value reg_offset> */
+				<0x80 0x0
+				0x13 0x04
+				0x7c 0x18c
+				0x80 0x2c
+				0x0a 0x184
+				0xbb 0x23c /* tune1 */
+				0x0e 0x240 /* tune2 */
+				0x05 0x248 /* tune4 */
+				0xd0 0x21c>; /* imp_ctrl1 */
+};
+
+/*
+ * Common Regulators
+ */
+
+/* Unused regulators */
+&pm8998_l6 {
+	status = "disabled";
+};
+
+&pm8998_l8 {
+	status = "disabled";
+};
+
+&pm8998_l16 {
+	status = "disabled";
+};
+
+&pm8998_l19 {
+	/delete-property/ regulator-always-on;
+};
+
+&pm8998_l28 {
+	status = "disabled";
+};
+
+/* Regulator */
+&pm8998_l22 {
+	regulator-min-microvolt = <3300000>;
+	regulator-max-microvolt = <3300000>;
+	regulator-always-on;
+};
+
+/*
+ * Common Audio Definitions
+ */
+
+/* Delete unused nodes */
+
+&slim_aud {
+	/delete-node/ tasha_codec;
+};
+
+/delete-node/ &snd_934x;
+/delete-node/ &wcd934x_cdc;
+/delete-node/ &hph_en0_gpio;
+/delete-node/ &hph_en1_gpio;
+/delete-node/ &wcd9xxx_intc;
+/delete-node/ &wcd_rst_gpio;
+/delete-node/ &wcd_us_euro_gpio;
+/delete-node/ &wcd_usbc_analog_en1_gpio;
+/delete-node/ &wcd_usbc_analog_en2n_gpio;
+
+&soc {
+	/delete-node/ qcom,wcd-dsp-mgr;
+};
+
+/* Fixing no sound card creation issue */
+&soc {
+	aloha-codec-dummy {
+		compatible = "fb,deferred-probe-trigger";
+	};
+};
+
+/* Enable HDMI audio */
+&ext_disp_audio_codec {
+	codec_name = "msm-ext-disp-audio-codec-rx";
+};
+
+/* PRI_MI2S */
+&dai_mi2s0 {
+	qcom,msm-mi2s-rx-lines = <2>; /* SD1 */
+	qcom,msm-mi2s-tx-lines = <1>; /* SD0 */
+
+	pinctrl-names = "default";
+	pinctrl-0 = <	&pri_mi2s_sck_active
+			&pri_mi2s_ws_active
+			&pri_mi2s_sd0_active
+			&pri_mi2s_sd1_active>;
+};
+
+/* SEC_MI2S */
+&dai_mi2s1 {
+	qcom,msm-mi2s-rx-lines = <2>; /* SD1 */
+	qcom,msm-mi2s-tx-lines = <1>; /* SD0 */
+
+	pinctrl-names = "default";
+	pinctrl-0 = <	&sec_mi2s_active
+			&sec_mi2s_sd0_active
+			&sec_mi2s_sd1_active>;
+};
+
+/* QUAT_MI2S */
+&dai_mi2s3 {
+	qcom,msm-mi2s-rx-lines = <1>; /* SD0 */
+	qcom,msm-mi2s-tx-lines = <2>; /* SD1 */
+
+	pinctrl-names = "default";
+	pinctrl-0 = <	&quat_mi2s_active
+			&quat_mi2s_sd0_active
+			&quat_mi2s_sd1_active>;
+};
+
+/*
+ * Key mapping
+ */
+&spmi_bus {
+	qcom,pm8998@0 {
+		qcom,power-on@800 {
+			qcom,pon_1 {
+				qcom,support-reset = <0>;
+				linux,code = <113>;
+			};
+			qcom,pon_2 {
+				status = "disabled";
+			};
+		};
+	};
+};
+
+&tlmm {
+	uart_console_active {
+		/delete-node/ config;
+
+		config_tx {
+			pins = "gpio4";
+			drive-strength = <2>;
+			bias-disable;
+		};
+
+		config_rx {
+			pins = "gpio5";
+			bias-pull-up;
+		};
+	};
+};
+
+&pcie0 {
+	status = "disabled";
+};
+
+/*
+ * HDMI drive strength tuning
+ */
+/ {
+	fb_hdmi_tuning: fb_hdmi_tuning {
+		hdmi_drv_high = <0xf>;
+		hdmi_deemp_high = <0x2>;
+		hdmi_clk_drv_high = <0xf>;
+		hdmi_clk_deemp_high = <0x0>;
+		hdmi_data_pre_drv1_high = <0x0>;
+		hdmi_data_pre_drv2_high = <0x1e>;
+		hdmi_clk_pre_drv1_high = <0x0>;
+		hdmi_clk_pre_drv2_high = <0x10>;
+		hdmi_l0_drv_res_code_offset_high = <0x3>;
+		hdmi_l1_drv_res_code_offset_high = <0x0>;
+		hdmi_l2_drv_res_code_offset_high = <0x0>;
+		hdmi_l3_drv_res_code_offset_high = <0x3>;
+
+		hdmi_drv_dig = <0xf>;
+		hdmi_deemp_dig = <0x7>;
+		hdmi_clk_drv_dig = <0xf>;
+		hdmi_clk_deemp_dig = <0x0>;
+		hdmi_data_pre_drv1_dig = <0x0>;
+		hdmi_data_pre_drv2_dig = <0x1e>;
+		hdmi_clk_pre_drv1_dig = <0x0>;
+		hdmi_clk_pre_drv2_dig = <0x18>;
+		hdmi_l0_drv_res_code_offset_dig = <0x3>;
+		hdmi_l1_drv_res_code_offset_dig = <0x0>;
+		hdmi_l2_drv_res_code_offset_dig = <0x0>;
+		hdmi_l3_drv_res_code_offset_dig = <0x0>;
+
+		hdmi_drv_mid = <0x3>;
+		hdmi_deemp_mid = <0x0>;
+		hdmi_clk_drv_mid = <0x3>;
+		hdmi_clk_deemp_mid = <0x0>;
+		hdmi_data_pre_drv1_mid = <0x0>;
+		hdmi_data_pre_drv2_mid = <0xe>;
+		hdmi_clk_pre_drv1_mid = <0x0>;
+		hdmi_clk_pre_drv2_mid = <0xe>;
+		hdmi_l0_drv_res_code_offset_mid = <0x3>;
+		hdmi_l1_drv_res_code_offset_mid = <0x0>;
+		hdmi_l2_drv_res_code_offset_mid = <0x0>;
+		hdmi_l3_drv_res_code_offset_mid = <0x0>;
+
+		hdmi_drv_other = <0x0>;
+		hdmi_deemp_other = <0x0>;
+		hdmi_clk_drv_other = <0x0>;
+		hdmi_clk_deemp_other = <0x0>;
+		hdmi_data_pre_drv1_other = <0x0>;
+		hdmi_data_pre_drv2_other = <0xe>;
+		hdmi_clk_pre_drv1_other = <0x0>;
+		hdmi_clk_pre_drv2_other = <0xe>;
+		hdmi_l0_drv_res_code_offset_other = <0x7>;
+		hdmi_l1_drv_res_code_offset_other = <0x0>;
+		hdmi_l2_drv_res_code_offset_other = <0x0>;
+		hdmi_l3_drv_res_code_offset_other = <0x0>;
+	};
+};
+
+&mdss_fb2 {
+	qcom,cont-splash-memory {
+		linux,contiguous-region = <&cont_splash_mem>;
+	};
+};
+
+

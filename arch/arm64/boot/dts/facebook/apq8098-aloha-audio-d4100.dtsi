@@ -1,0 +1,156 @@
+/* Copyright (c) 2017, Facebook Inc. All rights reserved.
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License version 2 and
+ * only version 2 as published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ */
+
+&tlmm {
+	d4100_gpio {
+		i2s_switch_active: i2s_switch_active {
+			mux {
+				pins = "gpio93";
+				function = "gpio";
+			};
+			config {
+				pins = "gpio93";
+				output-high;
+			};
+		};
+
+		i2s_switch_suspend: i2s_switch_suspend {
+			mux {
+				pins = "gpio93";
+				function = "gpio";
+			};
+			config {
+				pins = "gpio93";
+				output-low;
+			};
+		};
+
+		aud_in_pwr_en_active: aud_in_pwr_en_active {
+			mux {
+				pins = "gpio76";
+				function = "gpio";
+			};
+			config {
+				pins = "gpio76";
+				output-high;
+			};
+		};
+
+		aud_in_pwr_en_suspend: aud_in_pwr_en_suspend {
+			mux {
+				pins = "gpio76";
+				function = "gpio";
+			};
+			config {
+				pins = "gpio76";
+				output-low;
+			};
+		};
+
+		spi_cs_low: spi_cs_low {
+			mux {
+				pins = "gpio33";
+				function = "gpio";
+			};
+			config {
+				pins = "gpio33";
+				output-low;
+			};
+		};
+
+		spi_cs_normal: spi_cs_normal {
+			mux {
+				pins = "gpio33";
+				function = "blsp_spi2";
+			};
+			config {
+				pins = "gpio33";
+				drive-strength = <6>;
+				bias-disable;
+			};
+		};
+	};
+};
+
+&spi_2_active {
+	mux {
+		pins = "gpio31", "gpio34",
+			"gpio32";
+		function = "blsp_spi2";
+	};
+
+	config {
+		pins = "gpio31", "gpio34",
+			"gpio32";
+		drive-strength = <6>;
+		bias-disable;
+	};
+};
+
+&spi_2_sleep {
+	mux {
+		pins = "gpio31", "gpio34",
+			"gpio32";
+		function = "blsp_spi2";
+	};
+
+	config {
+		pins = "gpio31", "gpio34",
+			"gpio32";
+		drive-strength = <6>;
+		bias-disable;
+	};
+};
+
+
+&spi_2 {
+	iaxxxspi0: iaxxx@0 {
+		compatible = "knowles,iaxxx-spi";
+		reg = <0>;
+		#address-cells = <1>;
+		#size-cells = <0>;
+		spi-max-frequency = <4800000>;
+		spi-cpha;
+		clock-names = "iaxxx_ext_clk";
+		clocks = <&clock_gcc clk_ln_bb_clk2>;
+		adnc,reset-gpio = <&tlmm 64 0>;
+		adnc,event-gpio = <&tlmm 54 0>;
+		adnc,spi-app-speed = <15000000>;
+		pinctrl-names = "default", "sleep",
+				"spi_cs_low", "spi_cs_normal";
+		pinctrl-0 = <&i2s_switch_active &spi_cs_low>;
+		pinctrl-1 = <&i2s_switch_suspend &spi_cs_low>;
+		pinctrl-2 = <&spi_cs_low>;
+		pinctrl-3 = <&spi_cs_normal>;
+
+		vdd-core-supply = <&audin_power_reg>;
+		vdd-io-supply = <&audin_power_reg>;
+
+	};
+};
+
+&dai_mi2s0 {
+	qcom,msm-mi2s-rx-lines = <2>;
+	qcom,msm-mi2s-tx-lines = <1>;
+
+	pinctrl-names = "default", "sleep";
+	pinctrl-0 = <
+			&pri_mi2s_sck_active
+			&pri_mi2s_ws_active
+			&pri_mi2s_sd0_active
+			&pri_mi2s_sd1_active>;
+	pinctrl-1 = <
+			&pri_mi2s_sck_sleep
+			&pri_mi2s_ws_sleep
+			&pri_mi2s_sd0_sleep
+			&pri_mi2s_sd1_sleep>;
+};

@@ -1,0 +1,63 @@
+/* Copyright (c) 2017, Facebook Inc. All rights reserved.
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License version 2 and
+ * only version 2 as published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ */
+
+/* Port BLSP1 ; BLSP1/QUP1 */
+
+/* Port BLSP2 ; BLSP1/QUP2 */
+&spi_2 {
+	status = "okay";
+};
+
+/* Port BLSP3 ; BLSP1/QUP3 */
+
+/* Port BLSP3 ; BLSP1/UART3 */
+&blsp1_uart3_hs {
+	status = "okay";
+};
+
+/* Port BLSP4 ; BLSP1/QUP4 */
+&i2c_4 {
+	status = "okay";
+};
+
+/* Port BLSP5 ; BLSP1/QUP5 */
+&i2c_5 {
+	status = "okay";
+};
+
+/* Port BLSP6 ; BLSP1/QUP6 */
+&i2c_6 {
+	status = "okay";
+};
+
+/* Port BLSP7 ; BLSP2/QUP1 */
+&i2c_7 {
+	status = "okay";
+};
+
+/* Port BLSP8[0,1] ; BLSP2/QUP2 */
+
+/* Port BLSP8[2,3] ; BLSP2/UART2 */
+&uartblsp2dm1 {
+	status = "ok";
+	pinctrl-names = "default";
+	pinctrl-0 = <&uart_console_active>;
+};
+
+/* Port BLSP9 ; BLSP2/QUP3 */
+
+/* Port BLSP10 ; BLSP2/QUP4 */
+
+/* Port BLSP11 ; BLSP2/QUP5 */
+
+/* Port BLSP12 ; BLSP2/QUP6 */
+

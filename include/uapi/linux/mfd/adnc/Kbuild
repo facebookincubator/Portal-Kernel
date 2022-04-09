@@ -1,0 +1,3 @@
+# UAPI Header export list
+header-y += iaxxx-odsp.h
+header-y += iaxxx-tunnel-intf.h

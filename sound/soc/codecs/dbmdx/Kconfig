@@ -1,0 +1,10 @@
+#
+# SoC audio configuration
+#
+
+config SND_SOC_DBMDX
+	tristate "DSPG Sound Codec"
+	depends on MFD_DBMDX
+	default n
+	help
+	  Select this option to enable the DSPG audio codec.

@@ -1,0 +1,24 @@
+* aw9109 led module
+
+Required properties:
+- compatible: must be "awinic,aw9109_led"
+- reg: the I2C address of the device
+
+Example:
+
+
+	&i2c3 {
+		aw9109_led@2c {
+			compatible = "awinic,aw9109_led";
+			reg = <0x2c>;
+			reset-gpio = <&pio 63 0>;
+			status = "okay";
+			aw9109,led {
+				aw9109,name = "aw9109_led";
+				aw9109,imax = <1>;
+				aw9109,brightness = <128>;
+				aw9109,max_brightness = <255>;
+			};
+		};
+	};
+

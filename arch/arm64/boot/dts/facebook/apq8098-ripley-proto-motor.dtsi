@@ -1,0 +1,42 @@
+/* Copyright (c) 2018, Facebook Inc. All rights reserved.
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License version 2 and
+ * only version 2 as published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ */
+
+/ {
+
+	motor: pwm-motor {
+		compatible = "pwm-motor";
+		pwms = <&pmi8998_pwm_2 0 0>;
+		qcom,pwm-period = <33333>;
+		sleep-gpio = <&tlmm 8 0>;
+		ph-gpio = <&tlmm 23 0>;
+	};
+};
+
+&pmi8998_pwm_2 {
+	status = "ok";
+};
+
+&pmi8998_gpios {
+	/* PMI8998 GPIO5 for LGP/PWM2 mode */
+	gpio@c400 {
+		status = "ok";
+		qcom,mode = <1>;
+		qcom,output-type = <0>;
+		qcom,invert = <0>;
+		qcom,pull = <5>;
+		qcom,vin-sel = <0>;
+		qcom,src-sel = <2>;
+		qcom,out-strength = <1>;
+		qcom,master-en = <1>;
+	};
+};
+

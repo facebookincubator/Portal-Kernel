@@ -1,0 +1,55 @@
+* IIO driver to control orientaion using gpio
+
+Required properties:
+
+  - compatible = "orient_gpio"
+  - landscape = landscape GPIO pin
+  - portrait = portrait GPIO pin
+
+Optional properties:
+
+  - default-orientation : 0 = landscape (default)
+			  1 = portrait
+			  2 = no default
+
+Example:
+
+orient_gpio {
+	compatible = "orient_gpio";
+	pinctrl-names = "default", "sleep";
+	pinctrl-0 = <&orient_gpio_active>;
+	pinctrl-1 = <&orient_gpio_suspend>;
+	default-orientation = <1>;
+	landscape = <&tlmm 81 GPIO_ACTIVE_LOW>;
+	portrait = <&tlmm 82 GPIO_ACTIVE_LOW>;
+};
+
+&tlmm {
+	orient_gpio_pinctrl {
+		orient_gpio_active: orient_gpio_active {
+			mux {
+				pins = "gpio81", "gpio82";
+				function = "gpio";
+			};
+
+			config {
+				pins = "gpio81", "gpio82";
+				drive-strength = <2>;   /* 2 mA */
+				bias-disable;           /* NO PULL */
+			};
+		};
+
+		orient_gpio_suspend: orient_gpio_suspend {
+			mux {
+				pins = "gpio81", "gpio82";
+				function = "gpio";
+			};
+
+			config {
+				pins = "gpio81", "gpio82";
+				drive-strength = <2>;   /* 2 mA */
+				bias-disable;           /* NO PULL */
+			};
+		};
+	};
+};

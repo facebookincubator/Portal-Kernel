@@ -1,0 +1,43 @@
+/* Copyright (c) 2017, The Linux Foundation. All rights reserved.
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License version 2 and
+ * only version 2 as published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ */
+
+#include <dt-bindings/gpio/gpio.h>
+#include <dt-bindings/input/input.h>
+
+&i2c_9 {
+	od100@50 {
+		compatible = "od100";
+		reg = <0x50>;
+		interrupt-parent = <&tlmm>;
+		interrupts = <62 0>;
+		interrupt-names = "od100_irq";
+		qcom,reset = <&tlmm 42 GPIO_ACTIVE_HIGH>;
+		fw_name = "OD_I2C_FLASH_IMAGE.bin";
+	};
+};
+
+&i2c_4 {
+	/* Accelerometer BMA250E*/
+	bma250@18 {
+		compatible = "bosch,bma250e";
+		reg = <0x18>;
+		interrupt-parent = <&tlmm>;
+		interrupts = <117 (IRQ_TYPE_LEVEL_HIGH | IRQ_TYPE_EDGE_RISING)>;
+	};
+
+	al3010@1C {
+		compatible = "al3010";
+		reg = <0x1C>;
+		#io-channel-cells = <1>;
+	};
+};
+

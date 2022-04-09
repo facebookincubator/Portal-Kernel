@@ -1,0 +1,91 @@
+/* Copyright (c) 2016, The Linux Foundation. All rights reserved.
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License version 2 and
+ * only version 2 as published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ */
+
+#include <dt-bindings/gpio/gpio.h>
+
+&tlmm {
+	tc358840xbg {
+		tc358840xbg_irq_active: tc358840xbg_irq_active {
+			mux {
+				pins = "gpio37";
+				function = "gpio";
+			};
+
+			config {
+				pins = "gpio37";
+				drive-strength = <2>;
+				input-enable;
+			};
+		};
+
+		tc358840xbg_irq_sleep: tc358840xbg_irq_sleep {
+			mux {
+				pins = "gpio37";
+				function = "gpio";
+			};
+
+			config {
+				pins = "gpio37";
+				drive-strength = <2>;
+				bias-pull-down;
+			};
+		};
+
+		tc358840xbg_reset_active: tc358840xbg_reset_active {
+			mux {
+				pins = "gpio62";
+				function = "gpio";
+			};
+
+			config {
+				pins = "gpio62";
+				drive-strength = <2>;
+				bias-disable;
+				output-low;
+			};
+		};
+
+		tc358840xbg_reset_sleep: tc358840xbg_reset_sleep {
+			mux {
+				pins = "gpio62";
+				function = "gpio";
+			};
+
+			config {
+				pins = "gpio62";
+				drive-strength = <2>;
+				bias-pull-down;
+				output-low;
+			};
+		};
+	};
+};
+
+&i2c_4 {
+	tc358840xbg@0f {
+		compatible = "toshiba,tc358840xbg";
+		reg = <0x0f>;
+		interrupt-parent = <&tlmm>;
+		interrupts = <37 IRQ_TYPE_LEVEL_HIGH>;
+		/* GPIO */
+		reset-gpios = <&tlmm 62 GPIO_ACTIVE_HIGH>;
+		refclk_hz = <48000000>; /* 40 - 50 MHz */
+
+		clock-names = "tc358840xbg_clk";
+		clocks = <&clock_gcc clk_ln_bb_clk2>;
+
+		pinctrl-names = "active", "sleep";
+		pinctrl-0 = <&tc358840xbg_irq_active &tc358840xbg_reset_active>;
+		pinctrl-1 = <&tc358840xbg_irq_sleep &tc358840xbg_reset_sleep>;
+		device-config = "config_B";
+	};
+};

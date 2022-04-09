@@ -1,0 +1,76 @@
+/* Copyright (c) 2018, Facebook Inc. All rights reserved.
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License version 2 and
+ * only version 2 as published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ */
+
+&soc {
+	lp5569_en_reg: lp556p_en_reg {
+		compatible = "regulator-fixed";
+		regulator-name = "lp5569_en";
+		regulator-min-microvolt = <1800000>;
+		regulator-max-microvolt = <1800000>;
+		gpio = <&tlmm 96 GPIO_ACTIVE_HIGH>;
+		enable-active-high;
+	};
+};
+
+&i2c_5 {
+	/delete-node/ lm96163@0x4c;
+
+	lp5569@0x32 {
+		compatible = "ti,lp5569";
+		reg = <0x32>;
+		clock-mode = /bits/ 8 <1>; /* Internal */
+		en-supply = <&lp5569_en_reg>;
+
+		B1 {
+			chan-name = "B1";
+			led-cur = /bits/ 8 <50>;
+			max-cur = /bits/ 8 <160>;
+		};
+
+		R1 {
+			chan-name = "R1"; /* Not Wired */
+			led-cur = /bits/ 8 <50>;
+			max-cur = /bits/ 8 <160>;
+		};
+
+		G1 {
+			chan-name = "G1";
+			led-cur = /bits/ 8 <50>;
+			max-cur = /bits/ 8 <160>;
+		};
+
+		W1 {
+			chan-name = "W1";
+			led-cur = /bits/ 8 <50>;
+			max-cur = /bits/ 8 <160>;
+		};
+
+		W2 {
+			chan-name = "W2";
+			led-cur = /bits/ 8 <50>;
+			max-cur = /bits/ 8 <160>;
+		};
+
+		W3 {
+			chan-name = "W3";
+			led-cur = /bits/ 8 <50>;
+			max-cur = /bits/ 8 <160>;
+		};
+
+		G2 {
+			chan-name = "G2";
+			led-cur = /bits/ 8 <50>;
+			max-cur = /bits/ 8 <160>;
+		};
+	};
+};
+

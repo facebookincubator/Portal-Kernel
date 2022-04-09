@@ -1,0 +1,171 @@
+/* Copyright (c) 2017, Facebook Inc. All rights reserved.
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License version 2 and
+ * only version 2 as published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ */
+
+/* Platform device for camera based presence detection */
+/ {
+	pd_camera: pd_camera {
+		compatible = "pd_camera";
+		gpio-irq = <&tlmm 22 1>;
+	};
+};
+
+&spi_1 {
+	sensor_spi@0 {
+		compatible = "qcom,sensor_spi";
+		reg = <0>; /* Chip select 0 */
+		spi-max-frequency  = <1000000>;
+		spi-boot-frequency = <1000000>;
+		spi-byteperword = <8>;
+		spi-cpha;
+		spi-cpol;
+		gpio-irq = <&tlmm 22 1>;
+	};
+
+	myriad_spi@1 {
+		compatible = "myriad,spi-bus";
+		reg = <1>; /* Chip select 1 */
+		spi-max-frequency  = <1000000>;
+		spi-boot-frequency = <1000000>;
+		spi-byteperword = <8>;
+
+		myriad,gpio-irq = <&tlmm 22 1>;
+		myriad,gpio-pwr = <&tlmm 26 0>;
+		myriad,gpio-reset = <&tlmm 30 0>;
+		myriad,gpio-boot = <&tlmm 8 0>; /* SPIS mode enable */
+
+		myriad,max-boot-time-ms = <60000>;
+		myriad,complete_type = <2>; /* IRQ based */
+		myriad,complete_irq_cnt = <2>; /* how many irqs to wait */
+
+		pinctrl-names = "pins_id_check", "pins_normal";
+		pinctrl-0 = <&spi_1_active_miso>;
+		pinctrl-1 = <&spi_1_sleep_miso>;
+	};
+};
+
+/* Both claim gpio_28, but it's needed as IRQ for Myriad ISP */
+&cci {
+	qcom,eeprom@2 {
+		status = "disabled";
+	};
+
+	qcom,camera@2 {
+		status = "disabled";
+	};
+};
+
+&cam_sensor_rear_active {
+	/* RESET, STANDBY, CSI_BUS_SEL, CSI_SW_EN */
+	mux {
+		pins = "gpio30","gpio26";
+		function = "gpio";
+	};
+
+	config {
+		pins = "gpio30","gpio26";
+		bias-disable; /* No PULL */
+		drive-strength = <2>; /* 2 MA */
+	};
+};
+
+&cam_sensor_rear_suspend {
+	/* RESET, STANDBY, CSI_BUS_SEL, CSI_SW_EN */
+	mux {
+		pins = "gpio30","gpio26";
+		function = "gpio";
+	};
+
+	config {
+		pins = "gpio30","gpio26";
+		bias-disable; /* No PULL */
+		drive-strength = <2>; /* 2 MA */
+	};
+};
+
+&cci {
+	eeprom0: qcom,eeprom@0 {
+		cell-index = <0>;
+		reg = <0>;
+		compatible = "qcom,eeprom";
+		cam_vdig-supply = <&pm8998_lvs1>;
+		qcom,cam-vreg-name = "cam_vdig";
+		qcom,cam-vreg-min-voltage = <0>;
+		qcom,cam-vreg-max-voltage = <0>;
+		qcom,cam-vreg-op-mode = <0>;
+		qcom,gpio-no-mux = <0>;
+		pinctrl-names = "cam_default", "cam_suspend";
+		pinctrl-0 = <	&cam_sensor_mclk0_active
+				&cam_sensor_rear_active>;
+		pinctrl-1 = <	&cam_sensor_mclk0_suspend
+				&cam_sensor_rear_suspend>;
+		gpios = <&tlmm 13 0>,
+			<&tlmm 30 0>,
+			<&tlmm 26 0>;
+		qcom,gpio-reset = <1>;
+		qcom,gpio-vana = <2>;
+		qcom,gpio-req-tbl-num = <0 1 2>;
+		qcom,gpio-req-tbl-flags = <1 0 0>;
+		qcom,gpio-req-tbl-label = "CAMIF_MCLK0",
+					"CAM_RESET0",
+					"CAM_VANA";
+		qcom,sensor-position = <0>;
+		qcom,sensor-mode = <0>;
+		qcom,cci-master = <0>;
+		status = "ok";
+		clocks = <&clock_mmss clk_mclk0_clk_src>,
+				<&clock_mmss clk_mmss_camss_mclk0_clk>;
+		clock-names = "cam_src_clk", "cam_clk";
+		qcom,clock-rates = <24000000 0>;
+	};
+
+	qcom,camera@0 {
+		cell-index = <0>;
+		compatible = "qcom,camera";
+		reg = <0x0>;
+		qcom,csiphy-sd-index = <0>;
+		qcom,csid-sd-index = <0>;
+		qcom,mount-angle = <0>;
+		qcom,eeprom-src = <&eeprom0>;
+		cam_vdig-supply = <&pm8998_lvs1>;
+		qcom,cam-vreg-name = "cam_vdig";
+		qcom,cam-vreg-min-voltage = <0>;
+		qcom,cam-vreg-max-voltage = <0>;
+		qcom,cam-vreg-op-mode = <0>;
+		qcom,gpio-no-mux = <0>;
+		pinctrl-names = "cam_default", "cam_suspend";
+		pinctrl-0 = <	&cam_sensor_mclk0_active
+				&cam_sensor_rear_active>;
+		pinctrl-1 = <	&cam_sensor_mclk0_suspend
+				&cam_sensor_rear_suspend>;
+		gpios = <&tlmm 13 0>,
+			<&tlmm 30 0>,
+			<&tlmm 26 0>;
+		qcom,gpio-reset = <1>;
+		qcom,gpio-vana = <2>;
+		qcom,gpio-req-tbl-num = <0 1 2>;
+		qcom,gpio-req-tbl-flags = <1 0 0>;
+		qcom,gpio-req-tbl-label = "CAMIF_MCLK0",
+					"CAM_RESET0",
+					"CAM_VANA";
+		qcom,sensor-position = <0>;
+		qcom,sensor-mode = <0>;
+		qcom,cci-master = <0>;
+		status = "ok";
+		clocks = <&clock_mmss clk_mclk0_clk_src>,
+				<&clock_mmss clk_mmss_camss_mclk0_clk>;
+		clock-names = "cam_src_clk", "cam_clk";
+		qcom,clock-rates = <24000000 0>;
+		qcom,cam-thermal;
+		qcom,cam-temp-reg = <0x13A>;
+		qcom,cam-temp-range = <(-20) 80>;
+	};
+};

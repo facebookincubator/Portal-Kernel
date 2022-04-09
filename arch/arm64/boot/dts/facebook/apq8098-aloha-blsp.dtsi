@@ -1,0 +1,153 @@
+/* Copyright (c) 2017, Facebook Inc. All rights reserved.
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License version 2 and
+ * only version 2 as published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ */
+
+&tlmm {
+	spi_1 {
+		spi_1_active {
+			mux {
+				pins = "gpio0", "gpio2", "gpio3";
+				function = "blsp_spi1";
+			};
+
+			config {
+				pins = "gpio0", "gpio2", "gpio3";
+				drive-strength = <6>;
+				bias-disable;
+			};
+		};
+
+		spi_1_sleep {
+			mux {
+				pins = "gpio0", "gpio2", "gpio3";
+				function = "blsp_spi1";
+			};
+
+			config {
+				pins = "gpio0", "gpio2", "gpio3";
+				drive-strength = <6>;
+				bias-disable;
+			};
+		};
+
+		spi_1_active_miso: spi_1_active_miso {
+			mux {
+				pins = "gpio1";
+				function = "blsp_spi1";
+			};
+
+			config {
+				pins = "gpio1";
+				drive-strength = <6>;
+				bias-pull-up;
+			};
+		};
+
+		spi_1_sleep_miso: spi_1_sleep_miso {
+			mux {
+				pins = "gpio1";
+				function = "blsp_spi1";
+			};
+
+			config {
+				pins = "gpio1";
+				drive-strength = <6>;
+				bias-disable;
+			};
+		};
+	};
+
+	uart_console_active {
+		/delete-node/ config;
+
+		config_tx {
+			pins = "gpio4";
+			drive-strength = <2>;
+			bias-disable;
+		};
+
+		config_rx {
+			pins = "gpio5";
+			bias-pull-up;
+		};
+	};
+};
+
+/* Port BLSP1 ; BLSP1/QUP1 */
+&spi_1 {
+	status = "okay";
+
+	/delete-property/ qcom,use-bam;
+	gpios = <&tlmm 3 0>, /* CLK */
+		<&tlmm 1 0>, /* MISO */
+		<&tlmm 0 0>; /* MOSI */
+	num-cs = <2>;
+	cs-gpios = <&tlmm 2 0>,
+		<&tlmm 2 0>;
+};
+
+/* Port BLSP2 ; BLSP1/QUP2 */
+&spi_2 {
+	status = "okay";
+};
+
+/* Port BLSP3 ; BLSP1/QUP3 */
+
+/* Port BLSP3 ; BLSP1/UART3 */
+&blsp1_uart3_hs {
+	status = "okay";
+};
+
+/* Port BLSP4 ; BLSP1/QUP4 */
+&i2c_4 {
+	status = "okay";
+};
+
+/* Port BLSP5 ; BLSP1/QUP5 */
+&i2c_5 {
+	status = "okay";
+};
+
+/* Port BLSP6 ; BLSP1/QUP6 */
+&i2c_6 {
+	status = "okay";
+};
+
+/* Port BLSP7 ; BLSP2/QUP1 */
+&i2c_7 {
+	status = "okay";
+};
+
+/* Port BLSP8[0,1] ; BLSP2/QUP2 */
+&i2c_8 {
+	status = "okay";
+};
+
+/* Port BLSP8[2,3] ; BLSP2/UART2 */
+&uartblsp2dm1 {
+	status = "ok";
+	pinctrl-names = "default";
+	pinctrl-0 = <&uart_console_active>;
+};
+
+/* Port BLSP9 ; BLSP2/QUP3 */
+
+/* Port BLSP10 ; BLSP2/QUP4 */
+&spi_10 {
+	status = "okay";
+};
+
+/* Port BLSP11 ; BLSP2/QUP5 */
+
+/* Port BLSP12 ; BLSP2/QUP6 */
+&spi_12 {
+	status = "okay";
+};

@@ -1,0 +1,45 @@
+#
+# Multifunction DBMDX configuration
+#
+config MFD_DBMDX
+	tristate "DSPG MFD Core driver"
+	depends on MFD_CORE
+	help
+	  Select this option to enable DSPG Voice Trigger/Enhancement Chip.
+
+config DBMDX_MHA
+	tristate "DBMDX MH Acoustics algorithm interface"
+	depends on MFD_DBMDX
+	select FB_MHA
+	default n
+	help
+          Select this option to allow access ot mHA algorithm
+
+config DBMDX_TILT
+	bool "Tilt Angle"
+	depends on MFD_DBMDX
+	default n
+	help
+	  Select this option to enable tilt angle related features
+
+config DBMDX_STAX
+	tristate "DBMDX STAX algorithm interface"
+	depends on MFD_DBMDX
+	select DBMDX_CHAR_CORE
+	default n
+	help
+	  Select this option to build stax algorithm
+
+config DBMDX_STAX_DSPG
+	bool "Dbmdx stax dspg"
+	depends on MFD_DBMDX
+	default n
+	help
+	  Select this option to allow access to stax algorithm
+
+config DBMDX_TV_DETECT
+	bool "DBMDX TV detect features enable"
+	depends on MFD_DBMDX
+	default n
+	help
+	  Select this option for TV detect features

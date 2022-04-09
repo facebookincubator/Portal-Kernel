@@ -1,0 +1,136 @@
+/* Copyright (c) 2017, Facebook Inc. All rights reserved.
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License version 2 and
+ * only version 2 as published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ */
+
+#include <dt-bindings/gpio/gpio.h>
+#include <dt-bindings/input/input.h>
+
+&hph_en0_gpio {
+	status = "disabled";
+};
+
+&hph_en1_gpio {
+	status = "disabled";
+};
+
+&wcd9xxx_intc {
+	status = "disabled";
+};
+
+&wcd_rst_gpio {
+	status = "disabled";
+};
+
+&soc {
+	audin_power_reg: audin_power_reg {
+		compatible = "regulator-fixed";
+		regulator-name = "audin_power";
+		regulator-min-microvolt = <1800000>;
+		regulator-max-microvolt = <1800000>;
+		regulator-enable-ramp-delay = <1500>;
+		gpio = <&tlmm 76 GPIO_ACTIVE_HIGH>;
+		enable-active-high;
+
+		regulator-state-mem {
+			regulator-off-in-suspend;
+		};
+	};
+
+	amp_power_reg: amp_power_reg {
+		compatible = "regulator-fixed";
+		regulator-name = "amp_power";
+		regulator-min-microvolt = <1800000>;
+		regulator-max-microvolt = <1800000>;
+		regulator-enable-ramp-delay = <10000>;
+		gpio = <&tlmm 24 GPIO_ACTIVE_HIGH>;
+		enable-active-high;
+
+		regulator-state-mem {
+			regulator-off-in-suspend;
+		};
+	};
+
+	qcom,msm-dai-tdm-pri-tx {
+		compatible = "qcom,msm-dai-tdm";
+		qcom,msm-cpudai-tdm-group-id = <37121>;
+		qcom,msm-cpudai-tdm-group-num-ports = <1>;
+		qcom,msm-cpudai-tdm-group-port-id = <36865>;
+		qcom,msm-cpudai-tdm-clk-rate = <1024000>;
+		dai_pri_tdm_tx_0: qcom,msm-dai-q6-tdm-pri-tx-0 {
+			compatible = "qcom,msm-dai-q6-tdm";
+			qcom,msm-cpudai-tdm-dev-id = <36865>;
+			qcom,msm-cpudai-tdm-sync-mode = <1>;
+			qcom,msm-cpudai-tdm-sync-src = <1>;
+			qcom,msm-cpudai-tdm-data-out = <0>;
+			qcom,msm-cpudai-tdm-invert-sync = <1>;
+			qcom,msm-cpudai-tdm-data-delay = <1>;
+			qcom,msm-cpudai-tdm-data-align = <0>;
+		};
+	};
+
+	/* Derive from tasha, and tune. */
+	sound-9335 {
+		compatible = "facebook,msm8998-asoc-snd-aloha-evt1";
+		qcom,model = "aloha-evt1-snd-card";
+
+		/delete-property/ qcom,ext-disp-audio-rx;
+		/delete-property/ qcom,auxpcm-audio-intf;
+		/delete-property/ qcom,wsa-max-devs;
+		/delete-property/ qcom,wsa-devs;
+		/delete-property/ qcom,wsa-aux-dev-prefix;
+
+		/delete-property/ qcom,us-euro-gpios;
+
+		qcom,mi2s-audio-intf;
+		qcom,msm-mi2s-master = <1>, <1>, <1>, <1>;
+		qcom,msm-mi2s-ext-mclk = <1>, <0>, <0>, <1>;
+		be_dl_name = "QUAT_MI2S_RX";
+		qcom,audio-routing = "HPOUT1 Demux", "HPOUT";
+
+		/* strip external display codec */
+		asoc-codec = <&stub_codec>, <&iaxxxspi0>, <&cs47l35>;
+		asoc-codec-names = "msm-stub-codec.1", "iaxxx-codec", "cs47l35";
+
+		amp_sdz-gpios = <&tlmm 49 GPIO_ACTIVE_LOW>;
+		amp_mute-gpios = <&tlmm 41 GPIO_ACTIVE_HIGH>;
+		pwr-supply = <&amp_power_reg>;
+
+		interrupt-parent = <&tlmm>;
+		interrupt-names = "faultz";
+		interrupts = <42 IRQ_TYPE_EDGE_FALLING>;
+	};
+
+	sound-tavil {
+		status = "disabled";
+	};
+
+	qcom,wcd-dsp-mgr {
+		status = "disabled";
+	};
+
+	wcd_spi {
+		status = "disabled";
+	};
+};
+
+&wcd_us_euro_gpio {
+	status = "disabled";
+};
+
+&wcd_usbc_analog_en1_gpio {
+	status = "disabled";
+};
+
+&wcd_usbc_analog_en2n_gpio {
+	status = "disabled";
+};
+
+
