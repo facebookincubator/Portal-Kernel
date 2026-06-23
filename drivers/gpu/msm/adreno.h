@@ -1,4 +1,5 @@
 /* Copyright (c) 2008-2018,2020, The Linux Foundation. All rights reserved.
+ * Copyright (c) 2022 Qualcomm Innovation Center, Inc. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 2 and
@@ -32,6 +33,9 @@
 
 #define DEVICE_3D_NAME "kgsl-3d"
 #define DEVICE_3D0_NAME "kgsl-3d0"
+
+/* Index to preemption scratch buffer to store KMD postamble */
+#define KMD_POSTAMBLE_IDX 100
 
 /* ADRENO_DEVICE - Given a kgsl_device return the adreno device struct */
 #define ADRENO_DEVICE(device) \
@@ -204,6 +208,9 @@ struct adreno_gpudev;
 /* Time to allow preemption to complete (in ms) */
 #define ADRENO_PREEMPT_TIMEOUT 10000
 
+#define PREEMPT_SCRATCH_ADDR(dev, id) \
+	((dev)->preempt.scratch.gpuaddr + (id * sizeof(u64)))
+
 #define ADRENO_INT_BIT(a, _bit) (((a)->gpucore->gpudev->int_bits) ? \
 		(adreno_get_int(a, _bit) < 0 ? 0 : \
 		BIT(adreno_get_int(a, _bit))) : 0)
@@ -236,6 +243,7 @@ enum adreno_preempt_states {
  * @work: A work struct for the preemption worker (for 5XX)
  * @token_submit: Indicates if a preempt token has been submitted in
  * current ringbuffer (for 4XX)
+ * @postamble_len: Number of dwords in KMD postamble pm4 packet
  */
 struct adreno_preemption {
 	atomic_t state;
@@ -243,6 +251,7 @@ struct adreno_preemption {
 	struct timer_list timer;
 	struct work_struct work;
 	bool token_submit;
+	u32 postamble_len;
 };
 
 
@@ -439,6 +448,12 @@ struct adreno_device {
 
 	struct list_head active_list;
 	spinlock_t active_list_lock;
+
+	/*
+	 * @perfcounter: Flag to clear perfcounters across contexts and
+	 * controls perfcounter ioctl read
+	 */
+	bool perfcounter;
 };
 
 /**

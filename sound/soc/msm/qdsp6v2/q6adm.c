@@ -1334,7 +1334,7 @@ static int32_t adm_callback(struct apr_client_data *data, void *priv)
 {
 	uint32_t *payload;
 	int i, j, port_idx, copp_idx, idx, client_id;
-	int num_modules;
+	uint32_t num_modules;
 	int ret;
 
 	if (data == NULL) {

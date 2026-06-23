@@ -507,12 +507,12 @@ adreno_ringbuffer_addcmds(struct adreno_ringbuffer *rb,
 		total_sizedwords += 4;
 
 	if (gpudev->preemption_pre_ibsubmit &&
-				adreno_is_preemption_enabled(adreno_dev))
-		total_sizedwords += 22;
+			adreno_is_preemption_enabled(adreno_dev))
+		total_sizedwords += 31;
 
 	if (gpudev->preemption_post_ibsubmit &&
-				adreno_is_preemption_enabled(adreno_dev))
-		total_sizedwords += 5;
+			adreno_is_preemption_enabled(adreno_dev))
+		total_sizedwords += 10;
 	else if (!adreno_is_a3xx(adreno_dev))
 		total_sizedwords += 3;
 

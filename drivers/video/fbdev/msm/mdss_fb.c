@@ -3642,6 +3642,8 @@ void mdss_panelinfo_to_fb_var(struct mdss_panel_info *pinfo,
 
 	var->xres = mdss_fb_get_panel_xres(pinfo);
 	var->yres = pinfo->yres;
+	var->xres_virtual = var->xres;
+	var->yres_virtual = var->yres * MDSS_FB_NUM;
 	var->lower_margin = pinfo->lcdc.v_front_porch -
 		pinfo->prg_fet;
 	var->upper_margin = pinfo->lcdc.v_back_porch +

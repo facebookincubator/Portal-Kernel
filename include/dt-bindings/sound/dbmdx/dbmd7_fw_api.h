@@ -107,6 +107,8 @@
 #define STAX_REGRESSION_CTRL            0x65
 #define STAX_AWB_CMD_SIZE               0x66
 #define OUTPUT_ISSUE_REPORT             0x67
+#define SET_LOGGING_LEVEL               0x69
+#define SET_VOIP_ACTIVE                 0x70
 /************* End Read Write  Registers ***************************/
 
 #define ERROR_CODE__NO_FREE_TX_MSG_ENTRY  (MSG_ERROR___NO_FREE_TX_MSG_ENTRY)

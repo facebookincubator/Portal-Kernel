@@ -678,6 +678,10 @@ static const struct snd_kcontrol_new dbmdx_snd_controls[] = {
 			0, dbmdx_addon_register_get, dbmdx_addon_register_set),
 	SOC_SINGLE_EXT("Output Error Report", OUTPUT_ISSUE_REPORT, 0, 0xffff,
 			0, dbmdx_addon_register_get, dbmdx_addon_register_set),
+	SOC_SINGLE_EXT("Logging Level", SET_LOGGING_LEVEL, 0, 0xffffffff,
+			0, dbmdx_addon_register_get, dbmdx_addon_register_set),
+  SOC_SINGLE_EXT("Voip Active", SET_VOIP_ACTIVE, 0, 0xffffffff,
+			0, dbmdx_addon_register_get, dbmdx_addon_register_set),
 
 
 };

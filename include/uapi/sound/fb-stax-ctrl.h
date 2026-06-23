@@ -20,6 +20,10 @@
 #include <linux/types.h>
 #include <linux/ioctl.h>
 
+#ifndef __KERNEL__
+#include <stdint.h>
+#endif
+
 /* Stax devices */
 typedef enum stax_device {
 	STAX_DEVICE_DSPG = 0,
