@@ -1,4 +1,5 @@
 /* Copyright (c) 2017-2018, The Linux Foundation. All rights reserved.
+ * Copyright (c) 2022 Qualcomm Innovation Center, Inc. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 2 and
@@ -9,6 +10,10 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  *
+* SPDX-License-Identifier: GPL-2.0 */
+/*
+ * Copyright (c) 2017-2020, The Linux Foundation. All rights reserved.
+ * Copyright (c) 2022 Qualcomm Innovation Center, Inc. All rights reserved.
  */
 
 #ifndef _A6XX_REG_H
@@ -395,6 +400,8 @@
 #define A6XX_RBBM_PERFCTR_RBBM_SEL_2             0x509
 #define A6XX_RBBM_PERFCTR_RBBM_SEL_3             0x50A
 #define A6XX_RBBM_PERFCTR_GPU_BUSY_MASKED        0x50B
+#define A6XX_RBBM_PERFCTR_SRAM_INIT_CMD          0x50e
+#define A6XX_RBBM_PERFCTR_SRAM_INIT_STATUS       0x50f
 
 #define A6XX_RBBM_ISDB_CNT                       0x533
 

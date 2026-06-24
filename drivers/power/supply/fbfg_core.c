@@ -696,8 +696,26 @@ static int fbfg_get_property(struct power_supply *psy,
 		}
 
 		val->intval = POWER_SUPPLY_HEALTH_GOOD;
-		if (pdata->pf_status != 0)
-			val->intval = POWER_SUPPLY_HEALTH_UNSPEC_FAILURE;
+
+		if (pdata->pf_status != 0) {
+			if ((pdata->pf_status == PD_OVER_DISCHARGE)
+				|| (pdata->pf_status == PD_SMBUS_CMD)
+				|| (pdata->pf_status == PD_SLEEP_SHUTDOWN)) {
+				/* PowerDown detected
+				 * 1 PowerDown by over discharge voltage
+				 * 2 PowerDown by SMBus command ( 0x40 )
+				 * 4 PowerDown by Sleep shutdown function
+				 */
+				fbfg_info("PowerDown detected, reason number is %d",
+					pdata->pf_status);
+			} else {
+				/* Permanent fail (PF) detected */
+				fbfg_err("Permanent fail detected, reason number is 0x%02x",
+					pdata->pf_status);
+				val->intval =
+					POWER_SUPPLY_HEALTH_UNSPEC_FAILURE;
+			}
+		}
 		break;
 	case POWER_SUPPLY_PROP_PRESENT:
 		val->intval = 1;
@@ -1264,7 +1282,9 @@ enum fbfg_device {
 static const struct i2c_device_id fbfg_id[] = {
 	{ "fb,fbfg_sbs", 0 },
 	{ "fb,fbfg_raj240045", RAJ240045},
-	{},
+	{}, /* TODO: if we add new chip, please revise the RAJ240045 vendor
+	     * specific PowerDown reasons usage in fbfg_get_property function
+	     */
 };
 MODULE_DEVICE_TABLE(i2c, fbfg_id);
 

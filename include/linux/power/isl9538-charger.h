@@ -69,6 +69,7 @@ struct isl9538 {
 	int *adapter_vadc_uvs;
 	int num_adapter_uv;
 	int trickle_charge_count;
+	unsigned long trace_counter;
 
 	/* Min adapter volt to enable charging */
 	int min_adapter_charge_uv;

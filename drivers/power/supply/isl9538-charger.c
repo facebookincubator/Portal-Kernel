@@ -42,6 +42,9 @@
 
 #define DEFAULT_UPA_MONITOR_DELAY_MS 3000
 
+//600000 ms (10 minutes) delay for workfunc trace print
+#define DEFAULT_MONITOR_WF_DELAY_MS 600000
+
 /* 500 ms from alarm timer until driver resumes */
 #define ISL9538_RESUME_TIMEOUT_MS 500
 
@@ -905,6 +908,17 @@ static void isl9538_monitor_workfunc(struct work_struct *work)
 			dev_err(&charger->client->dev,
 				"resume didn't happen\n");
 		}
+	}
+
+        /* Check if monitor_workfunc is active, T135596544 */
+	if(charger->trace_counter + msecs_to_jiffies(DEFAULT_MONITOR_WF_DELAY_MS) < jiffies) {
+		trace_monitor_workfunc( vadc_uv,
+			pdata->fg_psy_name,
+			charger->min_adapter_charge_uv,
+			charger->adapter_disable_charging,
+			charger->trickle_charge_count,
+			charger->suspended);
+		charger->trace_counter = jiffies;
 	}
 
 	/* Update fg cache data */

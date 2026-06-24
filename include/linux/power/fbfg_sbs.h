@@ -58,6 +58,11 @@
 #define DEFAULT_RSOC 50
 #define DEFAULT_NUM_CELLS 4
 
+/* RAJ240045 PowerDown mode reasons */
+#define PD_OVER_DISCHARGE 1
+#define PD_SMBUS_CMD 2
+#define PD_SLEEP_SHUTDOWN 4
+
 enum FBFG_SBS_REG_IDX {
 	FBFG_SBS_REG_BATT_MODE,
 	FBFG_SBS_REG_AT_RAT,

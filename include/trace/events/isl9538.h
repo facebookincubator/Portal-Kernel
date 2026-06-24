@@ -118,6 +118,43 @@ TRACE_EVENT(upa_monitor_work,
 				)
 );
 
+TRACE_EVENT(monitor_workfunc,
+
+	TP_PROTO(int vadc_uv, const char *fg_psy_name, int min_charge_uv,
+		bool adapter_disable_charging, int trickle_charge_count, bool suspended),
+
+	TP_ARGS(vadc_uv, fg_psy_name, min_charge_uv,
+		adapter_disable_charging, trickle_charge_count, suspended),
+
+	TP_STRUCT__entry(
+			__field(int, vadc_uv);
+			__field(const char *, fg_psy_name)
+			__field(int, min_charge_uv)
+			__field(bool, adapter_disable_charging)
+			__field(int, trickle_charge_count)
+			__field(bool, suspended)
+	),
+
+	TP_fast_assign(
+			__entry->vadc_uv = vadc_uv;
+			__entry->fg_psy_name = fg_psy_name;
+			__entry->min_charge_uv = min_charge_uv;
+			__entry->adapter_disable_charging = adapter_disable_charging;
+			__entry->trickle_charge_count = trickle_charge_count;
+			__entry->suspended = suspended;
+	),
+
+	TP_printk("vadc_uv=%d, name=%s, min_charge_uv=%d, "
+			"adapter_disable_charging=%hhu, trickle_charge_count=%d, suspended=%hhu",
+				__entry->vadc_uv,
+				__entry->fg_psy_name,
+				__entry->min_charge_uv,
+				__entry->adapter_disable_charging,
+				__entry->trickle_charge_count,
+				__entry->suspended
+				)
+);
+
 #endif /* _TRACE_ISL9538_H */
 
 /* This part must be outside protection */

@@ -1,4 +1,5 @@
 /* Copyright (c) 2002,2007-2020, The Linux Foundation. All rights reserved.
+ * Copyright (c) 2022,2024 Qualcomm Innovation Center, Inc. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 2 and
@@ -8,7 +9,11 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- *
+ */
+// SPDX-License-Identifier: GPL-2.0-only
+/*
+ * Copyright (c) 2002,2007-2020, The Linux Foundation. All rights reserved.
+ * Copyright (c) 2022 Qualcomm Innovation Center, Inc. All rights reserved.
  */
 #include <linux/slab.h>
 #include <linux/sched.h>
@@ -28,6 +33,7 @@
 #include "adreno_trace.h"
 
 #include "a3xx_reg.h"
+#include "a6xx_reg.h"
 #include "adreno_a5xx.h"
 
 #define RB_HOSTPTR(_rb, _pos) \
@@ -555,7 +561,7 @@ adreno_ringbuffer_addcmds(struct adreno_ringbuffer *rb,
 
 	if (gpudev->preemption_pre_ibsubmit &&
 			adreno_is_preemption_enabled(adreno_dev))
-		total_sizedwords += 27;
+		total_sizedwords += 31;
 
 	if (gpudev->preemption_post_ibsubmit &&
 			adreno_is_preemption_enabled(adreno_dev))
@@ -876,6 +882,8 @@ static inline int _get_alwayson_counter(struct adreno_device *adreno_dev,
 		ADRENO_GPUREV(adreno_dev) <= ADRENO_REV_A530)
 		*p++ = adreno_getreg(adreno_dev,
 			ADRENO_REG_RBBM_ALWAYSON_COUNTER_LO);
+	else if (adreno_is_a6xx(adreno_dev))
+		*p++ = A6XX_CP_ALWAYS_ON_COUNTER_LO | (1 << 30) | (2 << 18);
 	else
 		*p++ = adreno_getreg(adreno_dev,
 			ADRENO_REG_RBBM_ALWAYSON_COUNTER_LO) |

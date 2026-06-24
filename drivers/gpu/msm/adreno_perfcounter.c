@@ -1,4 +1,5 @@
 /* Copyright (c) 2002,2007-2017, The Linux Foundation. All rights reserved.
+ * Copyright (c) 2022 Qualcomm Innovation Center, Inc. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 2 and
@@ -9,6 +10,11 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  *
+ */
+// SPDX-License-Identifier: GPL-2.0-only
+/*
+ * Copyright (c) 2002,2007-2020, The Linux Foundation. All rights reserved.
+ * Copyright (c) 2022 Qualcomm Innovation Center, Inc. All rights reserved.
  */
 #include <linux/module.h>
 #include <linux/uaccess.h>
@@ -143,7 +149,8 @@ void adreno_perfcounter_restore(struct adreno_device *adreno_dev)
 	struct adreno_perfcount_group *group;
 	unsigned int counter, groupid;
 
-	if (counters == NULL)
+	/* Do not save/restore if not requested */
+	if (counters == NULL || !adreno_dev->perfcounter)
 		return;
 
 	for (groupid = 0; groupid < counters->group_count; groupid++) {
@@ -177,7 +184,8 @@ inline void adreno_perfcounter_save(struct adreno_device *adreno_dev)
 	unsigned int counter, groupid;
 	int ret = 0;
 
-	if (counters == NULL)
+	/* Do not save/restore if not requested */
+	if (counters == NULL || !adreno_dev->perfcounter)
 		return;
 
 	if (gpudev->oob_set)

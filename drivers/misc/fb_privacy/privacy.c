@@ -532,7 +532,7 @@ static int __init fbp_privacy_init(void)
 	}
 
 	ret = of_property_read_u8(np, "fb,default-brightness", &brightness);
-	pr_info("%s: brightness set to %d\n", __func__, brightness);
+	pr_debug("%s: brightness set to %d\n", __func__, brightness);
 	if (ret)
 		pr_err("%s: Brighness not set, resolving to default",
 		       __func__);
@@ -608,6 +608,7 @@ static int __init fbp_privacy_init(void)
 	/* If change_allow exists, enable now */
 	enable_change_allow();
 
+	pr_info("%s: privacy driver initialized\n", __func__);
 	return ret;
 }
 late_initcall(fbp_privacy_init);
